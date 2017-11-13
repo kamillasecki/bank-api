@@ -4,6 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public enum transactionType {
-    DEBIT,
-    CREDIT
+    DR,
+    CR
 }

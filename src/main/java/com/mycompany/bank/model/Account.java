@@ -18,6 +18,13 @@ public class Account {
     public Account() {
     }
 
+    public Account(long sortCode, long accNumber, int balance, List<Transaction> list) {
+        this.sortCode = sortCode;
+        this.accNumber = accNumber;
+        this.balance = balance;
+        this.list = list;
+    }
+
     public long getSortCode() {
         return sortCode;
     }
