@@ -14,16 +14,16 @@ public class Customer {
     private String name;
     private String address;
     private String email;
-    private String password;
+    private String login;
     private List <Account> accounts;
 
     public Customer() {}
 
-    public Customer(String name, String address, String email, String password, List<Account> accounts) {
+    public Customer(String name, String address, String email, String login, List<Account> accounts) {
         this.name = name;
         this.address = address;
         this.email = email;
-        this.password = password;
+        this.login = login;
         this.accounts = accounts;
     }
 
@@ -52,11 +52,11 @@ public class Customer {
     }
 
     public String getLogin() {
-        return password;
+        return login;
     }
 
     public void setLogin(String login) {
-        this.password = login;
+        this.login = login;
     }
 
     public List<Account> getAccounts() {
