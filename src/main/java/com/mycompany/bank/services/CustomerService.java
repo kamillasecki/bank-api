@@ -27,7 +27,8 @@ public class CustomerService {
 
   
     public Customer createCustomer(Customer customer){
-        Customer test = em.find(Customer.class, customer.getName());
+        Customer test = em.find(Customer.class, customer.getId());
+        System.out.println(customer.toString());
         if (test == null) {
             tx.begin();
             em.persist(customer);
