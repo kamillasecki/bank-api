@@ -29,6 +29,15 @@ public class Customer implements Serializable {
     private Address address;
     private String email;
     private String login;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    private String password;
     //private List <Account> accounts;
 
     public String getName() {
