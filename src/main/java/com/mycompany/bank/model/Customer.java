@@ -9,6 +9,7 @@ package com.mycompany.bank.model;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -19,20 +20,11 @@ import javax.persistence.Table;
 public class Customer implements Serializable {
     @Id
     private String name;
-    private String address;
+    @Embedded
+    private Address address;
     private String email;
     private String login;
     //private List <Account> accounts;
-
-    public Customer() {}
-
-    public Customer(String name, String address, String email, String login) {
-        this.name = name;
-        this.address = address;
-        this.email = email;
-        this.login = login;
-        //this.accounts = accounts;
-    }
 
     public String getName() {
         return name;
@@ -42,11 +34,11 @@ public class Customer implements Serializable {
         this.name = name;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
