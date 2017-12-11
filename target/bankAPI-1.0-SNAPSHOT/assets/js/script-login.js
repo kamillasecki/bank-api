@@ -21,9 +21,10 @@
                     url: "/api/users/login",
                     type: "POST",
                     data: JSON.stringify(user),
-                    dataType: "text",
+                    dataType: "json",
                     success: function (result) {
-                        console.log( result );
+                        console.log("Received: " + JSON.stringify(result));
+                        window.location = "/home.html?session=" + result.token + "&id=" + result.id;
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         var error = '<div class="alert alert-danger fade in">' +

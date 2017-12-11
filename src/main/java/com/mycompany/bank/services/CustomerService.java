@@ -57,7 +57,7 @@ public class CustomerService {
            Customer fromDb = results.get(0);
            System.out.println(fromDb.toString() + " : " + customer.getPassword());
            if (!fromDb.getPassword().equals(customer.getPassword())) {
-               return Response.status(Response.Status.FORBIDDEN).entity("Invalid username or password!").build();
+               return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Invalid username or password!'}").build();
            } else {
                Random random = new SecureRandom();
                String token = new BigInteger(130, random).toString(32);
@@ -69,11 +69,12 @@ public class CustomerService {
                        .executeUpdate();
                tx.commit();
                em.close();
+               fromDb.setToken(token);
                
-               return Response.status(Response.Status.OK).entity(token).build();
+               return Response.status(Response.Status.OK).entity(fromDb).build();
            }
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity("Invalid username or password").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Invalid username or password'}").build();
         }
     }
     public Customer getCustomer (int id, String token){
