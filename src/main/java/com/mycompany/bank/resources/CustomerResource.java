@@ -9,6 +9,7 @@ import com.mycompany.bank.model.Customer;
 import com.mycompany.bank.services.CustomerService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -18,8 +19,14 @@ public class CustomerResource {
     CustomerService customerService = new CustomerService();
 
     @POST
-    public Customer createCustomer (Customer customer){
-        return customerService.createCustomer(customer);
+    public Response createCustomer (Customer customer){
+        if(customerService.customerExists(customer.getLogin())){
+            return Response.status(Response.Status.FORBIDDEN).entity("Customer with login " + customer.getLogin() + "already exist.").build();
+        } else {
+        
+            return Response.status(Response.Status.OK).entity(customerService.createCustomer(customer)).build();
+        }
+        
     }
 
 //    @GET

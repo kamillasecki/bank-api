@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class CustomerService {
     
@@ -25,7 +26,13 @@ public class CustomerService {
     private EntityManager em = emf.createEntityManager();
     private EntityTransaction tx = em.getTransaction();        
 
-  
+  public boolean customerExists(String login) {
+       String query = "Select id from Customer c where c.login ='" + login + "'";
+       Query test = em.createNativeQuery(query);
+       List results = test.getResultList();
+        return !results.isEmpty();
+  }
+    
     public Customer createCustomer(Customer customer){
         Customer test = em.find(Customer.class, customer.getId());
         System.out.println(customer.toString());
@@ -33,7 +40,6 @@ public class CustomerService {
             tx.begin();
             em.persist(customer);
             tx.commit();
-            
             em.close();
         }
 //        boolean found = false;
