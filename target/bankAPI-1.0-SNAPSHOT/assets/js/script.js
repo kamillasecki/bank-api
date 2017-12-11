@@ -40,6 +40,7 @@
                     dataType: "text",
                     success: function (result) {
                         console.log("successfully sent" + result );
+                        window.location = "/login.html";
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         var error = '<div class="alert alert-danger fade in">' +
