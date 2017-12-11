@@ -15,6 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.ws.rs.core.Response;
 
 public class CustomerService {
     
@@ -42,25 +43,25 @@ public class CustomerService {
             tx.commit();
             em.close();
         }
-//        boolean found = false;
-//        String status;
-//
-//        for (Map.Entry<Long, Customer> entry : customers.entrySet())
-//        {
-//            if (customer.getLogin() == entry.getValue().getLogin()){
-//                found = true;
-//            }
-//        }
-//        if (found) {
-//           // status = "{\"status\":\"The customer with login: " + customer.getLogin() + " already exists\"}";
-//        } else {
-//            customers.put((long) (customers.size()+1), customer);
-//            //status = "{\"status\":\"The customer " + customer.getLogin() + " has been added successfully\"}";
-//        }
-        //customers.put((long) (customers.size()+1), customer);
         return customer;
     }
-
+    
+    public Response validateCustomer(Customer customer) {
+        String query = "Select password from Customer c where c.login ='" + customer.getLogin() + "'";
+        Query test = em.createNativeQuery(query);
+        List<Customer> results = test.getResultList();
+        if(!results.isEmpty()){
+           Object fromDb = results.get(0);
+           System.out.println(fromDb.toString() + " : " + customer.getPassword());
+           if (!fromDb.toString().equals(customer.getPassword())) {
+               return Response.status(Response.Status.FORBIDDEN).entity("Invalid username or password!").build();
+           } else {
+               return Response.status(Response.Status.OK).entity("Welcome").build();
+           }
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).entity("Invalid username or password").build();
+        }
+    }
 //    public Customer getCustomer (String login){
 //        boolean found = false;
 //        long key = 0;

@@ -19,14 +19,20 @@ public class CustomerResource {
     CustomerService customerService = new CustomerService();
 
     @POST
+    @Path("/registration")
     public Response createCustomer (Customer customer){
         if(customerService.customerExists(customer.getLogin())){
-            return Response.status(Response.Status.FORBIDDEN).entity("Customer with login " + customer.getLogin() + "already exist.").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Customer with login " + customer.getLogin() + " already exist.").build();
         } else {
-        
             return Response.status(Response.Status.OK).entity(customerService.createCustomer(customer)).build();
         }
         
+    }
+    
+    @POST
+    @Path("/login")
+    public Response login (Customer customer){
+        return customerService.validateCustomer(customer);
     }
 
 //    @GET

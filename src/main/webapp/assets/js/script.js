@@ -34,10 +34,10 @@
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    url: "/api/users",
+                    url: "/api/users/registration",
                     type: "POST",
                     data: JSON.stringify(user),
-                    dataType: "json",
+                    dataType: "text",
                     success: function (result) {
                         console.log("successfully sent" + result );
                     },
