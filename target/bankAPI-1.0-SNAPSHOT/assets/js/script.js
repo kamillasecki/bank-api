@@ -37,7 +37,7 @@
                     url: "/api/users/registration",
                     type: "POST",
                     data: JSON.stringify(user),
-                    dataType: "text",
+                    dataType: "json",
                     success: function (result) {
                         console.log("successfully sent" + result );
                         window.location = "/login.html";
@@ -46,7 +46,7 @@
                         var error = '<div class="alert alert-danger fade in">' +
                             '<strong>Error!</strong> ' + jqXHR.responseText + '</div>';
                         $("#alert").append(error);
-                                            }
+                    }
                 });  
             }
         });

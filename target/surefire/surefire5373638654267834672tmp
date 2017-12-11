@@ -1,0 +1,7 @@
+#surefire
+#Mon Dec 11 21:19:18 GMT 2017
+maven.ext.class.path=C\:\\Program Files\\NetBeans 8.1\\java\\maven-nblib\\netbeans-eventspy.jar
+user.dir=C\:\\Users\\kamil\\Documents\\NetBeansProjects\\bank-api
+file.encoding=UTF-8
+localRepository=C\:\\Users\\kamil\\.m2\\repository
+basedir=C\:\\Users\\kamil\\Documents\\NetBeansProjects\\bank-api
