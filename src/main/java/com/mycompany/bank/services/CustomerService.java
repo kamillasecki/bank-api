@@ -26,7 +26,7 @@ public class CustomerService {
     //=         Attributes
     //===========================================
     
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Cusromer");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Bank");
     private EntityManager em = emf.createEntityManager();
     private EntityTransaction tx = em.getTransaction();        
 
@@ -49,32 +49,42 @@ public class CustomerService {
         return customer;
     }
     
-    public Response validateCustomer(Customer customer) {
+    public Customer validateCustomer(Customer customer) {
         Query q = em.createQuery("SELECT c from Customer c WHERE c.login = :username");
         q.setParameter("username", customer.getLogin());
         List<Customer> results = q.getResultList();
         if(!results.isEmpty()){
            Customer fromDb = results.get(0);
-           System.out.println(fromDb.toString() + " : " + customer.getPassword());
+           System.out.println(fromDb + " : " + customer.getPassword());
            if (!fromDb.getPassword().equals(customer.getPassword())) {
-               return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Invalid username or password!'}").build();
+               //return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Invalid username or password!'}").build();
+               return null;
            } else {
                Random random = new SecureRandom();
                String token = new BigInteger(130, random).toString(32);
                
                tx.begin();
-               em.createQuery("UPDATE Customer c SET c.token = :token WHERE c.id = :id")
+               int executeUpdate = em.createQuery("UPDATE Customer c SET c.token = :token WHERE c.id = :id")
                        .setParameter("token", token)
                        .setParameter("id", fromDb.getId())
                        .executeUpdate();
                tx.commit();
                em.close();
+               
                fromDb.setToken(token);
                
-               return Response.status(Response.Status.OK).entity(fromDb).build();
+               //return Response.status(Response.Status.OK).entity(fromDb).build
+               System.out.println((Customer)fromDb);
+               Customer c = new Customer();
+               c.setEmail(fromDb.getEmail());
+               c.setLogin(fromDb.getLogin());
+               c.setToken(fromDb.getToken());
+               return c;
+               
            }
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Invalid username or password'}").build();
+            //return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Invalid username or password'}").build();
+            return null;
         }
     }
     public Customer getCustomer (int id, String token){

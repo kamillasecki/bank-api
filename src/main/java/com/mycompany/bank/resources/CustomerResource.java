@@ -35,7 +35,13 @@ public class CustomerResource {
     @POST
     @Path("/login")
     public Response login (Customer customer){
-        return customerService.validateCustomer(customer);
+        Customer c = customerService.validateCustomer(customer);
+        if (c != null){
+            return Response.status(Response.Status.OK).entity(c).build();
+            //System.out.println(c);
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Incorrect username or password.'}").build();
+        }
     }
 
     @GET

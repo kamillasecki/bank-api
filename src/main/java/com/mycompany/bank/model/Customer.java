@@ -7,6 +7,8 @@ package com.mycompany.bank.model;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import javax.persistence.Embedded;
@@ -14,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,7 +32,19 @@ public class Customer implements Serializable {
     private Address address;
     private String email;
     private String login;
+    private String password;
     private String token;
+    @OneToMany
+    private Collection<Account> account = new ArrayList<Account>();
+    
+    
+    public Collection<Account> getAccount() {
+        return account;
+    }
+
+    public void setAccount(Collection<Account> account) {
+        this.account = account;
+    }
 
     public String getToken() {
         return token;
@@ -46,9 +61,7 @@ public class Customer implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    private String password;
-    //private List <Account> accounts;
-
+    
     public String getName() {
         return name;
     }
@@ -89,11 +102,4 @@ public class Customer implements Serializable {
         this.login = login;
     }
 
-//    public List<Account> getAccounts() {
-//        return accounts;
-//    }
-//
-//    public void addAccount(Account account) {
-//        this.accounts.add(account);
-//    }
 }
