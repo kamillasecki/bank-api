@@ -34,7 +34,7 @@ public class CustomerService {
        String query = "Select id from Customer c where c.login ='" + login + "'";
        Query test = em.createNativeQuery(query);
        List results = test.getResultList();
-        return !results.isEmpty();
+       return !results.isEmpty();
   }
     
     public Customer createCustomer(Customer customer){
@@ -70,15 +70,14 @@ public class CustomerService {
                        .executeUpdate();
                tx.commit();
                em.close();
-               
-               fromDb.setToken(token);
-               
-               //return Response.status(Response.Status.OK).entity(fromDb).build
+                              
                System.out.println((Customer)fromDb);
                Customer c = new Customer();
                c.setEmail(fromDb.getEmail());
                c.setLogin(fromDb.getLogin());
-               c.setToken(fromDb.getToken());
+               c.setToken(token);
+               c.setId(fromDb.getId());
+               
                return c;
                
            }

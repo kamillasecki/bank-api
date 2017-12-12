@@ -25,7 +25,7 @@ public class CustomerResource {
     @Path("/registration")
     public Response createCustomer (Customer customer){
         if(customerService.customerExists(customer.getLogin())){
-            return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Customer with login " + customer.getLogin() + " already exist.'}").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Customer with login " + customer.getLogin() + " already exist.").build();
         } else {
             return Response.status(Response.Status.OK).entity(customerService.createCustomer(customer)).build();
         }
@@ -40,17 +40,23 @@ public class CustomerResource {
             return Response.status(Response.Status.OK).entity(c).build();
             //System.out.println(c);
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Incorrect username or password.'}").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Incorrect username or password.").build();
         }
     }
 
     @GET
     @Path("/user/{id}")
-    public Customer getCustomer (@PathParam("id") int id, @Context HttpHeaders headers){
+    public Response getCustomer (@PathParam("id") int id, @Context HttpHeaders headers){
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         System.out.println("hello");
         System.out.println("HEADERS: " + authHeaders.get(0));
         System.out.println("ID: " + id);
-        return customerService.getCustomer(id,authHeaders.get(0));
+        Customer c = customerService.getCustomer(id,authHeaders.get(0));
+        if(c == null){
+            return Response.status(Response.Status.FORBIDDEN).entity("Bad token or user not logged in").build();
+        } else {
+            return Response.status(Response.Status.OK).entity(c).build();
+        }
+        
     }
 }
