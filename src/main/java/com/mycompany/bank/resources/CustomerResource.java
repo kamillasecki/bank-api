@@ -64,12 +64,12 @@ public class CustomerResource {
     
     @POST
     @Path("/user/{id}/account/new")
-    public Response newAccount (@PathParam("id") int id, @Context HttpHeaders headers){
+    public Response newAccount (Account account, @PathParam("id") int id, @Context HttpHeaders headers){
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         System.out.println("hello");
         System.out.println("HEADERS: " + authHeaders.get(0));
         System.out.println("ID: " + id);
-        Account a = accountService.newAccount(id, authHeaders.get(0), "new");
+        Account a = accountService.newAccount(id, authHeaders.get(0), account.getName());
         if (a == null) {
             return Response.status(Response.Status.FORBIDDEN).entity("Something wet wrong").build();
         } else {

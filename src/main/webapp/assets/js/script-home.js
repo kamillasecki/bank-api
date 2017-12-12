@@ -17,7 +17,10 @@
                     success: function (result) {
                         console.log("Received user details:" + JSON.stringify(result) );
                         $("#login_button").replaceWith('<a href="logout.html" class="btn btn-primary navbar-btn navbar-right"><strong>Log out ' + result.login + '</strong></a>');
-                    },
+                        $("#user_name").replaceWith(result.name);
+                        $("#user_email").append(result.email);
+                        $("#accounts_link").prop('href', '/accouonts.html?session=' + result.token + '&id=' + result.id);
+                        },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.log("ERROR: " + JSON.stringify(jqXHR));
                     }
