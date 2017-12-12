@@ -65,16 +65,19 @@ public class CustomerService {
                        .setParameter("id", fromDb.getId())
                        .executeUpdate();
                tx.commit();
-               em.close();
+               
                               
-               System.out.println((Customer)fromDb);
+               
                Customer c = new Customer();
                c.setEmail(fromDb.getEmail());
                c.setLogin(fromDb.getLogin());
                c.setToken(token);
                c.setId(fromDb.getId());
-               c.setAccount(fromDb.getAccount());
-               
+               if(!fromDb.getAccount().isEmpty()){
+                   c.setAccount(fromDb.getAccount());
+               }
+     
+               em.close();
                return c;
            }
         } else {

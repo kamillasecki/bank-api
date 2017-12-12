@@ -8,6 +8,9 @@
         load()
         $("#btn_send").click(function(){
             var accName = $("#input_accName").val();
+            console.log("Account name: " + accName );
+            var data = '{"name":"'+accName+'"}';
+            console.log("Data: " + data );
             if(accName === ""){
                console.log("nop!");
             } else {
@@ -19,7 +22,7 @@
                 },
                 url: "/api/users/user/" + id + "/account/new",
                 type : "POST",
-                data: "{'name':'"+accName+"'}",
+                data: data,
                 dataType: "json",
                 success: function (result) {
                     load();
