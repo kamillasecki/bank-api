@@ -21,11 +21,7 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Response;
 
 public class CustomerService {
-    
-    //===========================================
-    //=         Attributes
-    //===========================================
-    
+
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Bank");
     private EntityManager em = emf.createEntityManager();
     private EntityTransaction tx = em.getTransaction();        
@@ -79,10 +75,8 @@ public class CustomerService {
                c.setId(fromDb.getId());
                
                return c;
-               
            }
         } else {
-            //return Response.status(Response.Status.FORBIDDEN).entity("{'text':'Invalid username or password'}").build();
             return null;
         }
     }

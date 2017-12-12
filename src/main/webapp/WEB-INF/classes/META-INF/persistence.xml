@@ -11,12 +11,12 @@
       <class>com.mycompany.bank.model.Account</class>
 
       <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://sql2.freesqldatabase.com:3306/sql2210156"/>
-      <property name="javax.persistence.jdbc.user" value="sql2210156"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="vI1%mA2*"/>
-      <property name="javax.persistence.validation.mode" value="none"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
+         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test"/>
+         <property name="javax.persistence.jdbc.user" value="root"/>
+         <property name="javax.persistence.jdbc.password" value=""/>
+         <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+         <property name="javax.persistence.validation.mode" value="none"/>
+         <property name="hibernate.hbm2ddl.auto" value="update"/>
       </properties>
       
    </persistence-unit>

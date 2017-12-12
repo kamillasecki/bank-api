@@ -5,7 +5,9 @@
  */
 package com.mycompany.bank.resources;
 
+import com.mycompany.bank.model.Account;
 import com.mycompany.bank.model.Customer;
+import com.mycompany.bank.services.AccountService;
 import com.mycompany.bank.services.CustomerService;
 import java.util.List;
 import javax.ws.rs.*;
@@ -20,6 +22,7 @@ import javax.ws.rs.core.Response;
 public class CustomerResource {
 
     CustomerService customerService = new CustomerService();
+    AccountService accountService = new AccountService();
 
     @POST
     @Path("/registration")
@@ -57,6 +60,20 @@ public class CustomerResource {
         } else {
             return Response.status(Response.Status.OK).entity(c).build();
         }
-        
+    }
+    
+    @POST
+    @Path("/user/{id}/account/new")
+    public Response newAccount (@PathParam("id") int id, @Context HttpHeaders headers){
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        System.out.println("hello");
+        System.out.println("HEADERS: " + authHeaders.get(0));
+        System.out.println("ID: " + id);
+        Account a = accountService.newAccount(id, authHeaders.get(0), "new");
+        if (a == null) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Something wet wrong").build();
+        } else {
+            return Response.status(Response.Status.OK).entity(a).build();
+        }
     }
 }
