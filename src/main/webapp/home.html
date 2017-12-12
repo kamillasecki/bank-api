@@ -39,39 +39,45 @@
             </div>
         </div>
         <div class="page-header">
-            <h3>Latest transactions</h3></div>
+            <h3>Your accounts:</h3></div>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
+                        <th>Account name</th>
+                        <th>Account number</th>
+                        <th>Sort code</th>
+                        <th>Ballance</th>
+                        
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
+                <tbody id="tbody1">
+                    
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="row register-form">
+        <div class="col-md-8 col-md-offset-2">
+            <form class="form-horizontal custom-form" id="form" data-toggle="validator" role="form">
+                <h1>New Account</h1>
+                <div class="form-group">
+                    <div class="col-sm-4 label-column">
+                        <label class="control-label" for="account-name-field">Account name </label>
+                    </div>
+                    <div class="col-sm-6 input-column">
+                        <input class="form-control" id="input_accName" type="text" required data-minlength="5">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div id="alert"></div>
+                <button class="btn btn-default submit-button" id="btn_send" type="button">Create</button>
+            </form>
+        </div>
+    </div>
     <footer class="site-footer">
-        <div class="container">
-            <hr>
+                <div class="container">
+                    <hr>
             <div class="row">
                 <div class="col-sm-6">
                     <h5>Bank of NCI © 2017</h5></div>

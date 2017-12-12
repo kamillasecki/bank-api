@@ -73,6 +73,7 @@ public class CustomerService {
                c.setLogin(fromDb.getLogin());
                c.setToken(token);
                c.setId(fromDb.getId());
+               c.setAccount(fromDb.getAccount());
                
                return c;
            }

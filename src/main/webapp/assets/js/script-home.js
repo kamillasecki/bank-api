@@ -20,6 +20,11 @@
                         $("#user_name").replaceWith(result.name);
                         $("#user_email").append(result.email);
                         $("#accounts_link").prop('href', '/accouonts.html?session=' + result.token + '&id=' + result.id);
+                        console.log("size:" + result.account.length);
+                            for(var i=0; i< result.account.length; i++){
+                                $("#tbody1").append('<tr><td>'+result.account[i].name+'</td><td>'+result.account[i].accNumber+'</td><td>'+result.account[i].sortCode+'</td><td>€ '+result.account[i].balance+'</td></tr>');
+                                
+                            }
                         },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.log("ERROR: " + JSON.stringify(jqXHR));
