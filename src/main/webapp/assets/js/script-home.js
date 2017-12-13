@@ -49,7 +49,8 @@
                     $("#login_button").replaceWith('<a href="logout.html" class="btn btn-primary navbar-btn navbar-right"><strong>Log out ' + result.login + '</strong></a>');
                     $("#user_name").replaceWith(result.name);
                     $("#user_email").append(result.email);
-                    $("#accounts_link").prop('href', '/accouonts.html?session=' + result.token + '&id=' + result.id);
+                    $("#transactions_link").prop('href', '/transactions.html?session=' + result.token + '&id=' + result.id);
+                    $("#transfers_link").prop('href', '/transfers.html?session=' + result.token + '&id=' + result.id);
 
                     for(var i=0; i< result.account.length; i++){
                         $("#tbody1").append('<tr><td>'+result.account[i].name+

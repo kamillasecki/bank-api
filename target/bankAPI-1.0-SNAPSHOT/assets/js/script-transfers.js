@@ -6,34 +6,7 @@
         var id = url.searchParams.get("id");
         
         load()
-        $("#btn_send").click(function(){
-            var accName = $("#input_accName").val();
-            console.log("Account name: " + accName );
-            var data = '{"name":"'+accName+'"}';
-            console.log("Data: " + data );
-            if(accName === ""){
-               console.log("nop!");
-            } else {
-                $.ajax({
-                    headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization' : token
-                },
-                url: "/api/users/user/" + id + "/account/new",
-                type : "POST",
-                data: data,
-                dataType: "json",
-                success: function (result) {
-                    load();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR: " + JSON.stringify(jqXHR));
-                }
-                });
-            }
-        });
-
+        
         function load(){
             $.ajax({    
                 headers: {
@@ -53,11 +26,17 @@
                     $("#transfers_link").prop('href', '/transfers.html?session=' + result.token + '&id=' + result.id);
 
                     for(var i=0; i< result.account.length; i++){
-                        $("#tbody1").append('<tr><td>'+result.account[i].name+
-                            '</td><td>'+result.account[i].accNumber+
-                            '</td><td>'+result.account[i].sortCode+
+                        $("#tbody1").append('<tr><td>'+result.account[i].name+' (' + result.account[i].accNumber + ')' +
                             '</td><td>€ '+result.account[i].balance+
-                            '</td></tr>');   
+                            '</td><td>'+
+                                '<div class="input-group col-md-6">'+
+                                    '<span class="input-group-addon">€</span>'+
+                                    '<input class="form-control currency" id="add_money_'+result.account[i].accNumber+'">'+
+                                    '<span class="input-group-btn">'+
+                                        '<button class="btn btn-secondary" onClick="addMoney('+ result.account[i].accNumber + ')" type="button">Add</button>'+
+                                    '</span>'+
+                                '</div>'+
+                            '</td><td><button class="btn btn-default submit-button" onClick="sendMoney('+ result.account[i].accNumber + ')" type="button">Transfer</button></td></tr>');   
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
