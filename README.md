@@ -51,7 +51,22 @@ Postman-Token: feceb6b4-d241-693b-97e0-171411243bb3
 {  
 	"name" : "Savings"  
 }  
+  
+ACCOUNT TOPUP
+  
+POST /api/user/32768/account/31983797/addMoney HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+Authorization: o32vj4d3g3vg0lrfc83tb166rp  
+Cache-Control: no-cache  
+Postman-Token: 65e9af5e-c21c-fa23-1992-f4c312664f43  
+  
+{  
+	"amount" : 1000 
+}  
 
+  
 <p>
   <b>API name:</b></b> getBooks() <br/>
   <b>Description:</b></b> This allows to return all books available in the system <br/>
