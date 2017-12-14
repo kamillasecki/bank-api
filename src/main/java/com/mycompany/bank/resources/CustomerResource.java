@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * CustomerResource.java
+ * Version Rev1
+ * Date 12/12/2017
+ * @author Kamil Lasecki, x14100819
  */
 package com.mycompany.bank.resources;
 
@@ -66,7 +67,7 @@ public class CustomerResource {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         Account a = accountService.newAccount(id, authHeaders.get(0), account.getName());
         if (a == null) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Something went wrong").build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
         } else {
             return Response.status(Response.Status.OK).entity(a).build();
         }
@@ -79,7 +80,7 @@ public class CustomerResource {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         Account a = accountService.addMoney(id, authHeaders.get(0), transaction);
         if (a == null) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Something went wrong").build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
         } else {
             return Response.status(Response.Status.OK).entity(a).build();
         }
@@ -94,6 +95,18 @@ public class CustomerResource {
             return Response.status(Response.Status.OK).entity("User logged out successfuly.").build(); 
         } else {
             return Response.status(Response.Status.FORBIDDEN).entity("Incorrect token or user.").build();
+        }
+    }
+    
+    @POST
+    @Path("/{id}/account/{acc}/transfer")
+    public Response sendMoney (Transaction transaction, @PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers){
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        Account a = accountService.sendMoney(id, acc, authHeaders.get(0), transaction);
+        if (a == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
+        } else {
+            return Response.status(Response.Status.OK).entity(a).build();
         }
     }
 }

@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Customer.java
+ * Version Rev1
+ * Date 12/11/2017
+ * @author Kamil Lasecki, x14100819
  */
 package com.mycompany.bank.model;
 

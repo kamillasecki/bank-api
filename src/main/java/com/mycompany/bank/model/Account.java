@@ -13,10 +13,8 @@ import javax.persistence.OneToMany;
 @Entity
 public class Account implements Serializable {
     @Id
-    @GeneratedValue
-    private int id;
-    private long sortCode;
     private long accNumber;
+    private long sortCode;
     private int balance;
     private String name;
     @OneToMany
@@ -28,14 +26,6 @@ public class Account implements Serializable {
 
     public void setTransactions(Collection<Transaction> transactions) {
         this.transactions = transactions;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

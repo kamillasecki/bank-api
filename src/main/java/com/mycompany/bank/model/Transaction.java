@@ -1,5 +1,10 @@
 package com.mycompany.bank.model;
-
+/**
+ * Transaction.java
+ * Version Rev1
+ * Date 12/11/2017
+ * @author Kamil Lasecki, x14100819
+ */
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import javax.persistence.Entity;
