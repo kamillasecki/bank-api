@@ -52,9 +52,6 @@ public class CustomerResource {
     @Path("/user/{id}")
     public Response getCustomer (@PathParam("id") int id, @Context HttpHeaders headers){
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println("hello");
-        System.out.println("HEADERS: " + authHeaders.get(0));
-        System.out.println("ID: " + id);
         Customer c = customerService.getCustomer(id,authHeaders.get(0));
         if(c == null){
             return Response.status(Response.Status.FORBIDDEN).entity("Bad token or user not logged in").build();
@@ -67,9 +64,6 @@ public class CustomerResource {
     @Path("/user/{id}/account/new")
     public Response newAccount (Account account, @PathParam("id") int id, @Context HttpHeaders headers){
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println("hello");
-        System.out.println("HEADERS: " + authHeaders.get(0));
-        System.out.println("ID: " + id);
         Account a = accountService.newAccount(id, authHeaders.get(0), account.getName());
         if (a == null) {
             return Response.status(Response.Status.FORBIDDEN).entity("Something went wrong").build();
@@ -83,14 +77,23 @@ public class CustomerResource {
     public Response addMoney (Transaction transaction, @PathParam("id") int id, @PathParam("acc") int acc, @Context HttpHeaders headers){
         transaction.setAccountNumber(acc);
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println("hello");
-        System.out.println("HEADERS: " + authHeaders.get(0));
-        System.out.println("ID: " + id);
         Account a = accountService.addMoney(id, authHeaders.get(0), transaction);
         if (a == null) {
             return Response.status(Response.Status.FORBIDDEN).entity("Something went wrong").build();
         } else {
             return Response.status(Response.Status.OK).entity(a).build();
+        }
+    }
+    
+    @GET
+    @Path("/user/{id}/logout")
+    public Response destroySession (Transaction transaction, @PathParam("id") int id, @Context HttpHeaders headers){
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String response = customerService.destroySession(id, authHeaders.get(0));
+        if ("OK".equals(response)) {
+            return Response.status(Response.Status.OK).entity("User logged out successfuly.").build(); 
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).entity("Incorrect token or user.").build();
         }
     }
 }

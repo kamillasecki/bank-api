@@ -1,6 +1,7 @@
 package com.mycompany.bank.model;
 
 import javax.persistence.Embeddable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Embeddable // Tells hibernate that this class is embedded as part of another class
 public class Address {

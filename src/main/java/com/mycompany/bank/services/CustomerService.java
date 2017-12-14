@@ -35,7 +35,6 @@ public class CustomerService {
     
     public Customer createCustomer(Customer customer){
         Customer test = em.find(Customer.class, customer.getId());
-        System.out.println(customer.toString());
         if (test == null) {
             tx.begin();
             em.persist(customer);
@@ -73,17 +72,14 @@ public class CustomerService {
                c.setLogin(fromDb.getLogin());
                c.setToken(token);
                c.setId(fromDb.getId());
-               if(!fromDb.getAccount().isEmpty()){
-                   c.setAccount(fromDb.getAccount());
-               }
-     
-               em.close();
+
                return c;
            }
         } else {
             return null;
         }
-    }
+}
+    
     public Customer getCustomer (int id, String token){
         Customer test = em.find(Customer.class, id);
         if (test.getToken().equals(token)) {
@@ -93,36 +89,23 @@ public class CustomerService {
         }
     }
 
-//    public String addAccount(Customer owner, Account account){
-//
-//        int accountNumber;
-//        boolean found = false;
-//        do {
-//            Random rand = new Random();
-//            accountNumber = rand.nextInt(89999999) + 10000000;
-//
-//            for (Map.Entry<Long, Customer> entry : customers.entrySet()) {
-//                for (Account element : entry.getValue().getAccounts()) {
-//                    if (element.getAccNumber() == accountNumber) {
-//                        found = true;
-//                    }
-//                }
-//            }
-//        } while (found);
-//        account.setAccNumber(accountNumber);
-//        owner.addAccount(account);
-//        return "{\"status\":\"account number: " + accountNumber + " has been created\"}";
-//    }
-
-//    public List<Account> displayAccounts(Customer user){
-//        Customer customer = null;
-//        for (Map.Entry<Long, Customer> entry : customers.entrySet())
-//        {
-//            if (user == entry.getValue()){
-//                customer=entry.getValue();
-//            }
-//        }
-//        return customer.getAccounts();
-//    }
-
+    public String destroySession(int id, String token) {
+        Customer test = em.find(Customer.class, id);
+        if (test.getToken().equals(token)) {
+            Random random = new SecureRandom();
+            String secretToken = new BigInteger(130, random).toString(32);
+            
+            test.setToken(secretToken);
+            
+            tx.begin();
+            em.persist(test);
+            tx.commit();
+            em.close();
+           
+            return "OK";
+            
+        } else {
+            return "NOT";
+        }
+    }
 }

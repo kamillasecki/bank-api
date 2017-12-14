@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-@XmlRootElement
 public class Account implements Serializable {
     @Id
     @GeneratedValue
