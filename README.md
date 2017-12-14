@@ -1,3 +1,20 @@
+POST /api/user/registration HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+Cache-Control: no-cache  
+Postman-Token: ba1fba30-9bbf-6413-227d-da1b3bdb306f  
+
+{"name":"Kamil Lasecki",  
+"email":"kamil.lasecki@eircom.net",  
+"address":{  
+	"street":"4 La Touche drive, Bluebell",  
+	"city":"Dublin",  
+	"county":"Dublin"},  
+"login":"klasecki1",  
+"password":"12345"}  
+
+
 <p>
   <b>API name:</b></b> getBooks() <br/>
   <b>Description:</b></b> This allows to return all books available in the system <br/>
