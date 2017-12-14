@@ -1,11 +1,10 @@
-REGISTRATION
-  
+========================  
+REGISTRATION  
+========================  
 POST /api/user/registration HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
 Content-Type: application/json  
-Cache-Control: no-cache  
-Postman-Token: ba1fba30-9bbf-6413-227d-da1b3bdb306f  
   
 {"name":"Kamil Lasecki",  
 "email":"kamil.lasecki@eircom.net",  
@@ -15,57 +14,56 @@ Postman-Token: ba1fba30-9bbf-6413-227d-da1b3bdb306f
 	"county":"Dublin"},  
 "login":"klasecki1",  
 "password":"12345"}  
-  
+========================  
 LOGIN
-  
+========================  
 POST /api/user/login HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json   
 Content-Type: application/json  
-Cache-Control: no-cache  
-Postman-Token: ea697795-842a-d4a6-b318-a6a7006c6359  
   
 {  
 	"login" : "klasecki1",   
 	"password" : "12345"  
 }  
-  
+========================  
 LOGOUT
-  
+========================  
 GET /api/user/32768/logout HTTP/1.1  
 Host: localhost:49000  
 Authorization: huls3mhvnqlr8uju2pf09b36c9  
-Cache-Control: no-cache  
-Postman-Token: 9c9eff5e-7194-e8e8-afd2-5b2298bf5682  
-  
+========================  
 ADD NEW ACCOUT
-  
+========================  
 POST /api/user/32768/account/new HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
 Content-Type: application/json  
 Authorization: o32vj4d3g3vg0lrfc83tb166rp  
-Cache-Control: no-cache  
-Postman-Token: feceb6b4-d241-693b-97e0-171411243bb3  
   
 {  
 	"name" : "Savings"  
 }  
-  
+========================  
 ACCOUNT TOPUP
-  
+========================  
 POST /api/user/32768/account/31983797/addMoney HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
 Content-Type: application/json  
 Authorization: o32vj4d3g3vg0lrfc83tb166rp  
-Cache-Control: no-cache  
-Postman-Token: 65e9af5e-c21c-fa23-1992-f4c312664f43  
   
 {  
 	"amount" : 1000 
 }  
-
+========================  
+GET USER BY ID
+========================  
+GET /api/user/32768 HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+Authorization: o32vj4d3g3vg0lrfc83tb166rp  
   
 <p>
   <b>API name:</b></b> getBooks() <br/>
