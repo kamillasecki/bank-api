@@ -1,3 +1,5 @@
+REGISTRATION
+
 POST /api/user/registration HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
@@ -13,6 +15,20 @@ Postman-Token: ba1fba30-9bbf-6413-227d-da1b3bdb306f
 	"county":"Dublin"},  
 "login":"klasecki1",  
 "password":"12345"}  
+
+LOGIN
+
+POST /api/user/login HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json   
+Content-Type: application/json  
+Cache-Control: no-cache  
+Postman-Token: ea697795-842a-d4a6-b318-a6a7006c6359  
+  
+{  
+	"login" : "klasecki1",   
+	"password" : "12345"  
+}  
 
 
 <p>
