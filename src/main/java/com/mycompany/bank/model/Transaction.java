@@ -2,16 +2,32 @@ package com.mycompany.bank.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+@Entity
 @XmlRootElement
 public class Transaction {
-
+    
+    @Id
+    @GeneratedValue
+    private int id;
     private transactionType type;
     private int amount;
     private long accountNumber;
     private Date date;
     private String description;
     private int postBallance;
+    
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public transactionType getType() {
         return type;

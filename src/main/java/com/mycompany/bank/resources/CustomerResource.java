@@ -7,6 +7,7 @@ package com.mycompany.bank.resources;
 
 import com.mycompany.bank.model.Account;
 import com.mycompany.bank.model.Customer;
+import com.mycompany.bank.model.Transaction;
 import com.mycompany.bank.services.AccountService;
 import com.mycompany.bank.services.CustomerService;
 import java.util.List;
@@ -71,7 +72,23 @@ public class CustomerResource {
         System.out.println("ID: " + id);
         Account a = accountService.newAccount(id, authHeaders.get(0), account.getName());
         if (a == null) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Something wet wrong").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Something went wrong").build();
+        } else {
+            return Response.status(Response.Status.OK).entity(a).build();
+        }
+    }
+    
+    @POST
+    @Path("/user/{id}/account/{acc}/addMoney")
+    public Response addMoney (Transaction transaction, @PathParam("id") int id, @PathParam("acc") int acc, @Context HttpHeaders headers){
+        transaction.setAccountNumber(acc);
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        System.out.println("hello");
+        System.out.println("HEADERS: " + authHeaders.get(0));
+        System.out.println("ID: " + id);
+        Account a = accountService.addMoney(id, authHeaders.get(0), transaction);
+        if (a == null) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Something went wrong").build();
         } else {
             return Response.status(Response.Status.OK).entity(a).build();
         }

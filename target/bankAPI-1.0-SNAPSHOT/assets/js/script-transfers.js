@@ -1,5 +1,4 @@
-(function() {
-    $(document).ready(function() {
+
         var url_string = window.location.href;
         var url = new URL(url_string);
         var token = url.searchParams.get("session");
@@ -21,10 +20,12 @@
                     console.log("Received user details:" + JSON.stringify(result) );
                     $("#login_button").replaceWith('<a href="logout.html" class="btn btn-primary navbar-btn navbar-right"><strong>Log out ' + result.login + '</strong></a>');
                     $("#user_name").replaceWith(result.name);
+                    $("#user_email").empty();
                     $("#user_email").append(result.email);
+                    $("#home_link").prop('href', '/home.html?session=' + result.token + '&id=' + result.id);
                     $("#transactions_link").prop('href', '/transactions.html?session=' + result.token + '&id=' + result.id);
                     $("#transfers_link").prop('href', '/transfers.html?session=' + result.token + '&id=' + result.id);
-
+                    $("#tbody1").empty();
                     for(var i=0; i< result.account.length; i++){
                         $("#tbody1").append('<tr><td>'+result.account[i].name+' (' + result.account[i].accNumber + ')' +
                             '</td><td>€ '+result.account[i].balance+
@@ -44,5 +45,35 @@
                 }
             });
         }
-    });
-}());
+        
+     
+
+function addMoney(acc){
+                
+            var inputId = "#add_money_" + acc;
+            var amount = $(inputId).val();
+            console.log("Amount: " + amount );
+            var data = '{"amount":"'+amount+'"}';
+            console.log("Data: " + data );
+            if(amount === ""){
+               console.log("nop!");
+            } else {
+                $.ajax({
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization' : token
+                },
+                url: "/api/users/user/" + id + "/account/" +acc+ "/addMoney",
+                type : "POST",
+                data: data,
+                dataType: "json",
+                success: function (result) {
+                    load();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR: " + JSON.stringify(jqXHR));
+                }
+                });
+            }
+        }

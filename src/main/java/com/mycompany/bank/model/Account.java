@@ -1,11 +1,14 @@
 package com.mycompany.bank.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 @XmlRootElement
@@ -17,7 +20,16 @@ public class Account implements Serializable {
     private long accNumber;
     private int balance;
     private String name;
-    //private List <Transaction> list;
+    @OneToMany
+    private Collection<Transaction> transactions = new ArrayList<Transaction>();
+
+    public Collection<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Collection<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 
     public int getId() {
         return id;
@@ -33,9 +45,6 @@ public class Account implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Account() {
     }
 
     public long getSortCode() {

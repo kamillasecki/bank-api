@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public enum transactionType {
+    TOPUP,
     DEBIT,
     CREDIT
 }
