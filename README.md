@@ -1,4 +1,3 @@
-========================  
 REGISTRATION  
 ========================  
 POST /api/user/registration HTTP/1.1  
@@ -14,7 +13,7 @@ Content-Type: application/json
 	"county":"Dublin"},  
 "login":"klasecki1",  
 "password":"12345"}  
-========================  
+  
 LOGIN
 ========================  
 POST /api/user/login HTTP/1.1  
@@ -26,13 +25,13 @@ Content-Type: application/json
 	"login" : "klasecki1",   
 	"password" : "12345"  
 }  
-========================  
+  
 LOGOUT
 ========================  
 GET /api/user/32768/logout HTTP/1.1  
 Host: localhost:49000  
 Authorization: huls3mhvnqlr8uju2pf09b36c9  
-========================  
+  
 ADD NEW ACCOUT
 ========================  
 POST /api/user/32768/account/new HTTP/1.1  
@@ -44,7 +43,7 @@ Authorization: o32vj4d3g3vg0lrfc83tb166rp
 {  
 	"name" : "Savings"  
 }  
-========================  
+  
 ACCOUNT TOPUP
 ========================  
 POST /api/user/32768/account/31983797/addMoney HTTP/1.1  
@@ -56,7 +55,7 @@ Authorization: o32vj4d3g3vg0lrfc83tb166rp
 {  
 	"amount" : 1000 
 }  
-========================  
+   
 GET USER BY ID
 ========================  
 GET /api/user/32768 HTTP/1.1  
