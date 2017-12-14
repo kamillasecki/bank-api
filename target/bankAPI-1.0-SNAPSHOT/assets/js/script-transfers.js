@@ -63,7 +63,7 @@ function addMoney(acc) {
                 'Content-Type': 'application/json',
                 'Authorization': token
             },
-            url: "/api/user/" + id + "/account/" + acc + "/addMoney",
+            url: "/api/user/" + id + "/account/" + acc,
             type: "POST",
             data: data,
             dataType: "json",
@@ -74,7 +74,7 @@ function addMoney(acc) {
                 console.log("ERROR: " + JSON.stringify(jqXHR));
                 var error = '<div class="alert alert-danger fade in">' +
                         '<strong>Error!</strong> ' + JSON.parse(jqXHR.responseText).text + '</div>';
-                $("#alert").append(error);
+                $("#alert2").append(error);
             }
         });
     }
@@ -162,11 +162,14 @@ function transferMoney(acc) {
         type: "POST",
         data: JSON.stringify(data),
         dataType: "json",
-        success: function (result) {
+        success: function () {
             load();
         },
-        error: function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR) {
             console.log("ERROR: " + JSON.stringify(jqXHR));
+            var error = '<div class="alert alert-danger fade in">' +
+                        '<strong>Error!</strong> ' + JSON.parse(jqXHR.responseText).text + '</div>';
+                $("#alert").append(error);
         }
     });
 }

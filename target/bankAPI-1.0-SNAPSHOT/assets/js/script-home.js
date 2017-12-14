@@ -21,7 +21,7 @@ $(document).ready(function () {
                     'Content-Type': 'application/json',
                     'Authorization': token
                 },
-                url: "/api/user/" + id + "/account/new",
+                url: "/api/user/" + id + "/account",
                 type: "POST",
                 data: data,
                 dataType: "json",

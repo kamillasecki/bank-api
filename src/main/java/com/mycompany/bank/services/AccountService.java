@@ -125,7 +125,7 @@ public class AccountService {
                     String text = "{\"text\":\"You dont have any accounts yet. Please create the account first.\"}";
                     return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
                 }
-                return Response.status(Response.Status.OK).entity(accounts.get(j)).build();   
+                return Response.status(Response.Status.OK).entity(accounts.get(j)).build();
             } else {
                 //unauthorised token
                 String text = "{\"text\":\"Incorrect token or not logged in.\"}";
@@ -138,7 +138,7 @@ public class AccountService {
         }
     }
 
-    public Account sendMoney(int id, long sendAcc, String token, Transaction t) {
+    public Response sendMoney(int id, long sendAcc, String token, Transaction t) {
         //Get sender from DB
         Customer test = em.find(Customer.class, id);
         long senderAcc = sendAcc;
@@ -151,68 +151,84 @@ public class AccountService {
             //check if requested account belongs to the user
             if (!accounts.isEmpty()) {
                 for (int i = 0; i < accounts.size(); i++) {
-                    System.out.println("Checking provided account: " + senderAcc + " if maches my account: " + accounts.get(i).getAccNumber());
                     if (accounts.get(i).getAccNumber() == senderAcc) {
                         found = true;
                     }
                 }
                 if (found) {
+
                     //find destination account
                     Account toAcc = em.find(Account.class, receiverAcc);
                     Account fromAcc = em.find(Account.class, senderAcc);
-                    if (toAcc != null) {
-                        //substract money from senders account
-                        t.setType(transactionType.DEBIT);
-                        t.setAmount(t.getAmount() * -1);
-                        t.setDate(new Date());
-                        t.setAccountNumber(senderAcc);
-                        int newBalance = fromAcc.getBalance() + t.getAmount();
-                        t.setPostBallance(newBalance);
+                    if (fromAcc.getBalance() >= t.getAmount()) {
+                        if (t.getAmount() > 0) {
+                            if (toAcc != null) {
+                                
+                                //substract money from senders account
+                                t.setType(transactionType.DEBIT);
+                                t.setAmount(t.getAmount() * -1);
+                                t.setDate(new Date());
+                                t.setAccountNumber(senderAcc);
+                                int newBalance = fromAcc.getBalance() + t.getAmount();
+                                t.setPostBallance(newBalance);
 
-                        //set a new ballance on the sender's account
-                        fromAcc.setBalance(newBalance);
-                        //Add the transaction to sender's account
-                        fromAcc.getTransactions().add(t);
+                                //set a new ballance on the sender's account
+                                fromAcc.setBalance(newBalance);
+                                //Add the transaction to sender's account
+                                fromAcc.getTransactions().add(t);
 
-                        Transaction t2 = new Transaction();
-                        //add money to receiver's account
-                        t2.setType(transactionType.CREDIT);
-                        t2.setAmount(t.getAmount() * -1);
-                        t2.setDate(new Date());
-                        t2.setAccountNumber(receiverAcc);
-                        newBalance = toAcc.getBalance() + t2.getAmount();
-                        t2.setPostBallance(newBalance);
+                                Transaction t2 = new Transaction();
+                                //add money to receiver's account
+                                t2.setType(transactionType.CREDIT);
+                                t2.setAmount(t.getAmount() * -1);
+                                t2.setDate(new Date());
+                                t2.setAccountNumber(receiverAcc);
+                                newBalance = toAcc.getBalance() + t2.getAmount();
+                                t2.setPostBallance(newBalance);
 
-                        //set a new ballance on the receiver's account
-                        toAcc.setBalance(newBalance);
-                        //Add the transaction to receiver's account
-                        toAcc.getTransactions().add(t2);
+                                //set a new ballance on the receiver's account
+                                toAcc.setBalance(newBalance);
+                                //Add the transaction to receiver's account
+                                toAcc.getTransactions().add(t2);
 
-                        tx.begin();
-                        em.persist(toAcc);
-                        em.persist(fromAcc);
-                        em.persist(t);
-                        em.persist(t2);
-                        tx.commit();
+                                tx.begin();
+                                em.persist(toAcc);
+                                em.persist(fromAcc);
+                                em.persist(t);
+                                em.persist(t2);
+                                tx.commit();
 
-                        return fromAcc;
+                                return Response.status(Response.Status.OK).entity(fromAcc).build();
 
+                            } else {
+                                //destination account not found
+                                String text = "{\"text\":\"Incorrect receiver's account.\"}";
+                                return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+                            }
+                        } else {
+                            //incorrect amount
+                            String text = "{\"text\":\"Supplied amount is incorrect.\"}";
+                            return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+                        }
                     } else {
-                        //destination account not found
-                        return null;
+                        //insuficient funds
+                        String text = "{\"text\":\"Insuficient funds on your account.\"}";
+                        return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
                     }
-
                 } else {
                     //sender does not own the account he is using
-                    return null;
+                    String text = "{\"text\":\"Sending from wrong account.\"}";
+                    return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
                 }
             } else {
                 //user does not have any accounts
-                return null;
+                String text = "{\"text\":\"You do not have any account yet.\"}";
+                return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
             }
         } else {
             //token does not match account
-            return null;
+            String text = "{\"text\":\"Incorrect token or user not logged in.\"}";
+            return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
     }
 

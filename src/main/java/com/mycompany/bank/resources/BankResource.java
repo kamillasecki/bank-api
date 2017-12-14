@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 @Path("/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public class CustomerResource {
+public class BankResource {
 
     CustomerService customerService = new CustomerService();
     AccountService accountService = new AccountService();
@@ -36,7 +36,6 @@ public class CustomerResource {
         } else {
             return Response.status(Response.Status.OK).entity(customerService.createCustomer(customer)).build();
         }
-
     }
 
     @POST
@@ -53,6 +52,13 @@ public class CustomerResource {
     }
 
     @GET
+    @Path("/{id}/logout")
+    public Response destroySession(Transaction transaction, @PathParam("id") int id, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        return customerService.destroySession(id, authHeaders.get(0));
+    }
+
+    @GET
     @Path("/{id}")
     public Response getCustomer(@PathParam("id") int id, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
@@ -66,42 +72,18 @@ public class CustomerResource {
     }
 
     @POST
-    @Path("/{id}/account/new")
+    @Path("/{id}/account")
     public Response newAccount(Account account, @PathParam("id") int id, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.newAccount(id, authHeaders.get(0), account.getName());
     }
 
     @POST
-    @Path("/{id}/account/{acc}/addMoney")
+    @Path("/{id}/account/{acc}")
     public Response addMoney(Transaction transaction, @PathParam("id") int id, @PathParam("acc") int acc, @Context HttpHeaders headers) {
         transaction.setAccountNumber(acc);
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.addMoney(id, authHeaders.get(0), transaction);
-    }
-
-    @GET
-    @Path("/{id}/logout")
-    public Response destroySession(Transaction transaction, @PathParam("id") int id, @Context HttpHeaders headers) {
-        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        String response = customerService.destroySession(id, authHeaders.get(0));
-        if ("OK".equals(response)) {
-            return Response.status(Response.Status.OK).entity("User logged out successfuly.").build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).entity("Incorrect token or user.").build();
-        }
-    }
-
-    @POST
-    @Path("/{id}/account/{acc}/transfer")
-    public Response sendMoney(Transaction transaction, @PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
-        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        Account a = accountService.sendMoney(id, acc, authHeaders.get(0), transaction);
-        if (a == null) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
-        } else {
-            return Response.status(Response.Status.OK).entity(a).build();
-        }
     }
 
     @GET
@@ -114,5 +96,12 @@ public class CustomerResource {
         } else {
             return Response.status(Response.Status.OK).entity(a).build();
         }
+    }
+
+    @POST
+    @Path("/{id}/account/{acc}/transfer")
+    public Response sendMoney(Transaction transaction, @PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        return accountService.sendMoney(id, acc, authHeaders.get(0), transaction);
     }
 }
