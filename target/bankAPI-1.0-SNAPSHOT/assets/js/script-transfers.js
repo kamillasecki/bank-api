@@ -40,7 +40,7 @@ function load() {
                         '</td><td><button class="btn btn-default submit-button" onClick="sendMoney(' + result.account[i].accNumber + ')" type="button">Transfer</button></td></tr>');
             }
         },
-        error: function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR) {
             console.log("ERROR: " + JSON.stringify(jqXHR));
             window.location = "/login.html";
         }
@@ -67,11 +67,14 @@ function addMoney(acc) {
             type: "POST",
             data: data,
             dataType: "json",
-            success: function (result) {
+            success: function () {
                 load();
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR) {
                 console.log("ERROR: " + JSON.stringify(jqXHR));
+                var error = '<div class="alert alert-danger fade in">' +
+                        '<strong>Error!</strong> ' + JSON.parse(jqXHR.responseText).text + '</div>';
+                $("#alert").append(error);
             }
         });
     }
@@ -138,32 +141,32 @@ function sendMoney(acc) {
             '</div>');
 }
 
-function transferMoney(acc){
+function transferMoney(acc) {
     var amount = $("#input_amount").val();
     var toAcc = $("#input_acc_no").val();
     var descr = $("#input_desc").val();
-    
+
     var data = {
-	"amount" : amount,
-	"description" : descr,
-	"accountNumber" : toAcc
+        "amount": amount,
+        "description": descr,
+        "accountNumber": toAcc
+    }
+
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        url: "/api/user/" + id + "/account/" + acc + "/transfer",
+        type: "POST",
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (result) {
+            load();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("ERROR: " + JSON.stringify(jqXHR));
         }
-        
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': token
-            },
-            url: "/api/user/" + id + "/account/" + acc + "/transfer",
-            type: "POST",
-            data: JSON.stringify(data),
-            dataType: "json",
-            success: function (result) {
-                load();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log("ERROR: " + JSON.stringify(jqXHR));
-            }
-        });
+    });
 }

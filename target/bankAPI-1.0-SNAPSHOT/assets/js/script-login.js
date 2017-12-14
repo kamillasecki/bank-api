@@ -10,7 +10,7 @@
                var user = new Object();
                 user.login = login;
                 user.password = password;
-                
+               
                 console.log("sending : " + JSON.stringify(user));
 
                 $.ajax({
@@ -26,14 +26,10 @@
                         console.log("Received: " + JSON.stringify(result));
                         window.location = "/home.html?session=" + result.token + "&id=" + result.id;
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        //var obj = JSON.parse(jqXHR.responseText)
+                    error: function(jqXHR) {
                         var error = '<div class="alert alert-danger fade in">' +
-                            '<strong>Error!</strong> ' + jqXHR.responseText + '</div>';
+                            '<strong>Error!</strong> ' + JSON.parse(jqXHR.responseText).text + '</div>';
                         $("#alert").append(error);
-                        console.log("ERROR: " + JSON.stringify(jqXHR))
-                        console.log("ERROR: " + JSON.stringify(jqXHR.responseText))
-                        console.log("ERROR: " + JSON.stringify(jqXHR.responseText.text))
                     }
                 });  
             }

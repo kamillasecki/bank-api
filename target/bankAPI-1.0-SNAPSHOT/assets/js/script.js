@@ -44,7 +44,7 @@
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         var error = '<div class="alert alert-danger fade in">' +
-                            '<strong>Error!</strong> ' + jqXHR.responseText + '</div>';
+                            '<strong>Error!</strong> ' + JSON.parse(jqXHR.responseText).text + '</div>';
                         $("#alert").append(error);
                     }
                 });  

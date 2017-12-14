@@ -4,9 +4,9 @@ var token = url.searchParams.get("session");
 var id = url.searchParams.get("id");
 
 $(document).ready(function () {
-    
+
     load();
-    
+
     $("#btn_send").click(function () {
         var accName = $("#input_accName").val();
         console.log("Account name: " + accName);
@@ -30,6 +30,9 @@ $(document).ready(function () {
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("ERROR: " + JSON.stringify(jqXHR));
+                    var error = '<div class="alert alert-danger fade in">' +
+                            '<strong>Error!</strong> ' + JSON.parse(jqXHR.responseText).text + '</div>';
+                    $("#alert").append(error);
                 }
             });
         }
@@ -38,7 +41,7 @@ $(document).ready(function () {
 
 
 function logout() {
-    console.log("Sending Seesion : " + token +  "to be closed");
+    console.log("Sending Seesion : " + token + "to be closed");
     $.ajax({
         headers: {
             'Authorization': token

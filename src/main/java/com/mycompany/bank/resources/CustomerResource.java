@@ -2,6 +2,7 @@
  * CustomerResource.java
  * Version Rev1
  * Date 12/12/2017
+ *
  * @author Kamil Lasecki, x14100819
  */
 package com.mycompany.bank.resources;
@@ -28,81 +29,86 @@ public class CustomerResource {
 
     @POST
     @Path("/registration")
-    public Response createCustomer (Customer customer){
-        if(customerService.customerExists(customer.getLogin())){
-            return Response.status(Response.Status.FORBIDDEN).entity("Customer with login " + customer.getLogin() + " already exist.").build();
+    public Response createCustomer(Customer customer) {
+        if (customerService.customerExists(customer.getLogin())) {
+            String text = "{\"text\":\"Customer with login " + customer.getLogin() + " already exist.\"}";
+            return Response.status(Response.Status.FORBIDDEN).entity(text).build();
         } else {
             return Response.status(Response.Status.OK).entity(customerService.createCustomer(customer)).build();
         }
-        
+
     }
-    
+
     @POST
     @Path("/login")
-    public Response login (Customer customer){
+    public Response login(Customer customer) {
         Customer c = customerService.validateCustomer(customer);
-        if (c != null){
+        if (c != null) {
             return Response.status(Response.Status.OK).entity(c).build();
             //System.out.println(c);
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity("Incorrect username or password.").build();
+            String text = "{\"text\":\"Incorrect username or password.\"}";
+            return Response.status(Response.Status.FORBIDDEN).entity(text).build();
         }
     }
 
     @GET
     @Path("/{id}")
-    public Response getCustomer (@PathParam("id") int id, @Context HttpHeaders headers){
+    public Response getCustomer(@PathParam("id") int id, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        Customer c = customerService.getCustomer(id,authHeaders.get(0));
-        if(c == null){
-            return Response.status(Response.Status.FORBIDDEN).entity("Bad token or user not logged in").build();
+        Customer c = customerService.getCustomer(id, authHeaders.get(0));
+        if (c == null) {
+            String text = "{\"text\":\"Bad token or user not logged in.\"}";
+            return Response.status(Response.Status.FORBIDDEN).entity(text).build();
         } else {
             return Response.status(Response.Status.OK).entity(c).build();
         }
     }
-    
+
     @POST
     @Path("/{id}/account/new")
-    public Response newAccount (Account account, @PathParam("id") int id, @Context HttpHeaders headers){
+    public Response newAccount(Account account, @PathParam("id") int id, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        Account a = accountService.newAccount(id, authHeaders.get(0), account.getName());
-        if (a == null) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
-        } else {
-            return Response.status(Response.Status.OK).entity(a).build();
-        }
+        return accountService.newAccount(id, authHeaders.get(0), account.getName());
     }
-    
+
     @POST
     @Path("/{id}/account/{acc}/addMoney")
-    public Response addMoney (Transaction transaction, @PathParam("id") int id, @PathParam("acc") int acc, @Context HttpHeaders headers){
+    public Response addMoney(Transaction transaction, @PathParam("id") int id, @PathParam("acc") int acc, @Context HttpHeaders headers) {
         transaction.setAccountNumber(acc);
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        Account a = accountService.addMoney(id, authHeaders.get(0), transaction);
-        if (a == null) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
-        } else {
-            return Response.status(Response.Status.OK).entity(a).build();
-        }
+        return accountService.addMoney(id, authHeaders.get(0), transaction);
     }
-    
+
     @GET
     @Path("/{id}/logout")
-    public Response destroySession (Transaction transaction, @PathParam("id") int id, @Context HttpHeaders headers){
+    public Response destroySession(Transaction transaction, @PathParam("id") int id, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         String response = customerService.destroySession(id, authHeaders.get(0));
         if ("OK".equals(response)) {
-            return Response.status(Response.Status.OK).entity("User logged out successfuly.").build(); 
+            return Response.status(Response.Status.OK).entity("User logged out successfuly.").build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).entity("Incorrect token or user.").build();
         }
     }
-    
+
     @POST
     @Path("/{id}/account/{acc}/transfer")
-    public Response sendMoney (Transaction transaction, @PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers){
+    public Response sendMoney(Transaction transaction, @PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         Account a = accountService.sendMoney(id, acc, authHeaders.get(0), transaction);
+        if (a == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
+        } else {
+            return Response.status(Response.Status.OK).entity(a).build();
+        }
+    }
+
+    @GET
+    @Path("/{id}/account/{acc}")
+    public Response getAccount(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        Account a = accountService.getAccoumt(id, acc, authHeaders.get(0));
         if (a == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
         } else {
