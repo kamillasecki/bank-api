@@ -64,6 +64,21 @@ Accept: application/json
 Content-Type: application/json  
 Authorization: o32vj4d3g3vg0lrfc83tb166rp  
   
+MONEY TRANSFER
+=========================
+POST /api/user/32768/account/31983797/transfer HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json   
+Authorization: o32vj4d3g3vg0lrfc83tb166rp  
+  
+{  
+	"amount" : 100,  
+	"description" : "money for nothing",  
+	"accountNumber" : 66534392  
+	  
+}  
+
 <p>
   <b>API name:</b></b> getBooks() <br/>
   <b>Description:</b></b> This allows to return all books available in the system <br/>
