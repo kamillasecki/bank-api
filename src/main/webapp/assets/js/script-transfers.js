@@ -20,9 +20,8 @@ function load() {
         success: function (result) {
             console.log("Received user details:" + JSON.stringify(result));
             $("#login_button").replaceWith('<a onClick="logout()" class="btn btn-primary navbar-btn navbar-right"><strong>Log out ' + result.login + '</strong></a>');
-            $("#user_name").replaceWith(result.name);
-            $("#user_email").empty();
-            $("#user_email").append(result.email);
+            $("#frame").empty();
+            $("#frame").append('<br><h2>Hello, ' + result.name + '!</h2><h4>' + result.email + '</h4>');
             $("#home_link").prop('href', '/home.html?session=' + result.token + '&id=' + result.id);
             $("#transactions_link").prop('href', '/transactions.html?session=' + result.token + '&id=' + result.id);
             $("#transfers_link").prop('href', '/transfers.html?session=' + result.token + '&id=' + result.id);
@@ -79,7 +78,7 @@ function addMoney(acc) {
 }
 
 function logout() {
-    console.log("Sending Seesion : " + token +  "to be closed");
+    console.log("Sending Seesion : " + token + "to be closed");
     $.ajax({
         headers: {
             'Authorization': token
@@ -94,4 +93,77 @@ function logout() {
             console.log("ERROR: " + JSON.stringify(jqXHR));
         }
     });
+}
+
+function sendMoney(acc) {
+    $("#frame").empty();
+    $("#frame").append('<div class="row register-form">' +
+            '<div class="col-md-9 col-md-offset-1">' +
+            '<form class="form-horizontal custom-form" id="form" data-toggle="validator" role="form">' +
+            '<h4>Transfer from account ' + acc + '</h4><hr>' +
+            '<div class="form-group">' +
+            '<div class="col-sm-4 label-column">' +
+            '<label class="control-label">To account no.</label>' +
+            '</div>' +
+            '<div class="col-sm-6 input-column">' +
+            '<input class="form-control" id="input_acc_no" type="text" required data-minlength="8">' +
+            '<div class="help-block with-errors"></div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="form-group">' +
+            '<div class="col-sm-4 label-column">' +
+            '<label class="control-label" for="username-input-field">Amount</label>' +
+            '</div>' +
+            '<div class="col-sm-6 input-column">' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon">€</span>' +
+            '<input class="form-control currency" id="input_amount" required>' +
+            '</div>' +
+            '<div class="help-block with-errors"></div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="form-group">' +
+            '<div class="col-sm-4 label-column">' +
+            '<label class="control-label" for="username-input-field">Description</label>' +
+            '</div>' +
+            '<div class="col-sm-6 input-column">' +
+            '<input class="form-control" id="input_desc" type="text" required>' +
+            '<div class="help-block with-errors"></div>' +
+            '</div>' +
+            '</div>' +
+            '<div id="alert"></div>' +
+            '<button class="btn btn-default submit-button" onClick="transferMoney(' + acc + ')" type="button">Send</button>' +
+            '</form>' +
+            '</div>' +
+            '</div>');
+}
+
+function transferMoney(acc){
+    var amount = $("#input_amount").val();
+    var toAcc = $("#input_acc_no").val();
+    var descr = $("#input_desc").val();
+    
+    var data = {
+	"amount" : amount,
+	"description" : descr,
+	"accountNumber" : toAcc
+        }
+        
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            url: "/api/user/" + id + "/account/" + acc + "/transfer",
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "json",
+            success: function (result) {
+                load();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("ERROR: " + JSON.stringify(jqXHR));
+            }
+        });
 }

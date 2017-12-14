@@ -1,5 +1,12 @@
 package com.mycompany.bank.model;
 
+/**
+ * Account.java
+ * Version Rev1
+ * Date 12/11/2017
+ * @author Kamil Lasecki, x14100819
+ */
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
