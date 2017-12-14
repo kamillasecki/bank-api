@@ -18,7 +18,7 @@
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    url: "/api/users/login",
+                    url: "/api/user/login",
                     type: "POST",
                     data: JSON.stringify(user),
                     dataType: "json",

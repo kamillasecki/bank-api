@@ -21,7 +21,7 @@ $(document).ready(function () {
                     'Content-Type': 'application/json',
                     'Authorization': token
                 },
-                url: "/api/users/user/" + id + "/account/new",
+                url: "/api/user/" + id + "/account/new",
                 type: "POST",
                 data: data,
                 dataType: "json",
@@ -43,7 +43,7 @@ function logout() {
         headers: {
             'Authorization': token
         },
-        url: "/api/users/user/" + id + "/logout",
+        url: "/api/user/" + id + "/logout",
         type: "GET",
         dataType: "text",
         success: function () {
@@ -62,7 +62,7 @@ function load() {
             'Content-Type': 'application/json',
             'Authorization': token
         },
-        url: "/api/users/user/" + id,
+        url: "/api/user/" + id,
         type: "GET",
         dataType: "json",
         success: function (result) {

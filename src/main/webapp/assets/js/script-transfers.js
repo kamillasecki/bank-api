@@ -14,7 +14,7 @@ function load() {
             'Content-Type': 'application/json',
             'Authorization': token
         },
-        url: "/api/users/user/" + id,
+        url: "/api/user/" + id,
         type: "GET",
         dataType: "json",
         success: function (result) {
@@ -64,7 +64,7 @@ function addMoney(acc) {
                 'Content-Type': 'application/json',
                 'Authorization': token
             },
-            url: "/api/users/user/" + id + "/account/" + acc + "/addMoney",
+            url: "/api/user/" + id + "/account/" + acc + "/addMoney",
             type: "POST",
             data: data,
             dataType: "json",
@@ -84,7 +84,7 @@ function logout() {
         headers: {
             'Authorization': token
         },
-        url: "/api/users/user/" + id + "/logout",
+        url: "/api/user/" + id + "/logout",
         type: "GET",
         dataType: "text",
         success: function () {

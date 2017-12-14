@@ -17,7 +17,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/users")
+@Path("/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class CustomerResource {
@@ -49,7 +49,7 @@ public class CustomerResource {
     }
 
     @GET
-    @Path("/user/{id}")
+    @Path("/{id}")
     public Response getCustomer (@PathParam("id") int id, @Context HttpHeaders headers){
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         Customer c = customerService.getCustomer(id,authHeaders.get(0));
@@ -61,7 +61,7 @@ public class CustomerResource {
     }
     
     @POST
-    @Path("/user/{id}/account/new")
+    @Path("/{id}/account/new")
     public Response newAccount (Account account, @PathParam("id") int id, @Context HttpHeaders headers){
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         Account a = accountService.newAccount(id, authHeaders.get(0), account.getName());
@@ -73,7 +73,7 @@ public class CustomerResource {
     }
     
     @POST
-    @Path("/user/{id}/account/{acc}/addMoney")
+    @Path("/{id}/account/{acc}/addMoney")
     public Response addMoney (Transaction transaction, @PathParam("id") int id, @PathParam("acc") int acc, @Context HttpHeaders headers){
         transaction.setAccountNumber(acc);
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
@@ -86,7 +86,7 @@ public class CustomerResource {
     }
     
     @GET
-    @Path("/user/{id}/logout")
+    @Path("/{id}/logout")
     public Response destroySession (Transaction transaction, @PathParam("id") int id, @Context HttpHeaders headers){
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         String response = customerService.destroySession(id, authHeaders.get(0));
