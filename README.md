@@ -1,3 +1,84 @@
+REGISTRATION  
+========================  
+POST /api/user/registration HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+  
+{"name":"Kamil Lasecki",  
+"email":"kamil.lasecki@eircom.net",  
+"address":{  
+	"street":"4 La Touche drive, Bluebell",  
+	"city":"Dublin",  
+	"county":"Dublin"},  
+"login":"klasecki1",  
+"password":"12345"}  
+  
+LOGIN
+========================  
+POST /api/user/login HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json   
+Content-Type: application/json  
+  
+{  
+	"login" : "klasecki1",   
+	"password" : "12345"  
+}  
+  
+LOGOUT
+========================  
+GET /api/user/32768/logout HTTP/1.1  
+Host: localhost:49000  
+Authorization: huls3mhvnqlr8uju2pf09b36c9  
+  
+ADD NEW ACCOUT
+========================  
+POST /api/user/32768/account/new HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+Authorization: o32vj4d3g3vg0lrfc83tb166rp  
+  
+{  
+	"name" : "Savings"  
+}  
+  
+ACCOUNT TOPUP
+========================  
+POST /api/user/32768/account/31983797/addMoney HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+Authorization: o32vj4d3g3vg0lrfc83tb166rp  
+  
+{  
+	"amount" : 1000 
+}  
+   
+GET USER BY ID
+========================  
+GET /api/user/32768 HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+Authorization: o32vj4d3g3vg0lrfc83tb166rp  
+  
+MONEY TRANSFER
+=========================
+POST /api/user/32768/account/31983797/transfer HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json   
+Authorization: o32vj4d3g3vg0lrfc83tb166rp  
+  
+{  
+	"amount" : 100,  
+	"description" : "money for nothing",  
+	"accountNumber" : 66534392  
+	  
+}  
+
 <p>
   <b>API name:</b></b> getBooks() <br/>
   <b>Description:</b></b> This allows to return all books available in the system <br/>
