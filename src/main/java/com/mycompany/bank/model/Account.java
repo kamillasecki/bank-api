@@ -10,6 +10,7 @@ package com.mycompany.bank.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Account implements Serializable {
     private long sortCode;
     private int balance;
     private String name;
-    @OneToMany
+    @OneToMany(cascade=CascadeType.REMOVE, orphanRemoval=true)
     private Collection<Transaction> transactions = new ArrayList<Transaction>();
 
     public Collection<Transaction> getTransactions() {

@@ -83,12 +83,35 @@ function load() {
                         '</td><td>' + result.account[i].accNumber +
                         '</td><td>' + result.account[i].sortCode +
                         '</td><td>€ ' + result.account[i].balance +
-                        '</td></tr>');
+                        '</td><td><button class="btn-xs btn-default submit-button" onClick="removeAcc(' + result.account[i].accNumber + ')" type="button">Close</button></td></tr>');
             }
         },
-        error: function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR) {
             console.log("ERROR: " + JSON.stringify(jqXHR));
             window.location = "/login.html";
+        }
+    });
+}
+
+function removeAcc(acc) {
+
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        url: "/api/user/" + id + "/account/" + acc,
+        type: "DELETE",
+        dataType: "json",
+        success: function () {
+            load();
+        },
+        error: function (jqXHR) {
+            console.log("ERROR: " + JSON.stringify(jqXHR));
+            var error = '<div class="alert alert-danger fade in">' +
+                    '<strong>Error!</strong> ' + JSON.parse(jqXHR.responseText).text + '</div>';
+            $("#alert").append(error);
         }
     });
 }

@@ -90,12 +90,7 @@ public class BankResource {
     @Path("/{id}/account/{acc}")
     public Response getAccount(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        Account a = accountService.getAccoumt(id, acc, authHeaders.get(0));
-        if (a == null) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Unauthorized action").build();
-        } else {
-            return Response.status(Response.Status.OK).entity(a).build();
-        }
+        return accountService.getAccoumt(id, acc, authHeaders.get(0));
     }
 
     @POST
@@ -103,5 +98,12 @@ public class BankResource {
     public Response sendMoney(Transaction transaction, @PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.sendMoney(id, acc, authHeaders.get(0), transaction);
+    }
+    
+    @DELETE
+    @Path("/{id}/account/{acc}")
+    public Response deleteAccount(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        return accountService.deleteAccount(id, acc, authHeaders.get(0));
     }
 }

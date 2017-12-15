@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class Customer implements Serializable {
     private String login;
     private String password;
     private String token;
-    @OneToMany
+    @OneToMany(orphanRemoval=true)
     private Collection<Account> account = new ArrayList<Account>();
     
     

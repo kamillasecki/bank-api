@@ -163,7 +163,7 @@ public class AccountService {
                     if (fromAcc.getBalance() >= t.getAmount()) {
                         if (t.getAmount() > 0) {
                             if (toAcc != null) {
-                                
+
                                 //substract money from senders account
                                 t.setType(transactionType.DEBIT);
                                 t.setAmount(t.getAmount() * -1);
@@ -241,10 +241,62 @@ public class AccountService {
         }
     }
 
-    public Account getAccoumt(int id, long acc, String token) {
+    public Response getAccoumt(int id, long acc, String token) {
         if (validateToken(id, token)) {
-
+            Account a = em.find(Account.class, acc);
+            if (a != null) {
+                return Response.status(Response.Status.OK).entity(a).build();
+            } else {
+                String text = "{\"text\":\"Account does not exist.\"}";
+                return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+            }
+        } else {
+            String text = "{\"text\":\"Wrong token or not logged in.\"}";
+            return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Response deleteAccount(int id, long acc, String token) {
+        Customer test = em.find(Customer.class, id);
+        if (test.getToken().equals(token)) {
+            List<Account> accounts = (List<Account>) test.getAccount();
+            boolean found = false;
+            int j = -1;
+            for (int i = 0; i < accounts.size(); i++) {
+                if (accounts.get(i).getAccNumber() == acc) {
+                    found = true;
+                    j = i;
+                }
+            }
+
+            if (found) {
+                Account a = accounts.get(j);
+                if (a.getBalance() == 0) {
+                    test.getAccount().remove(a);
+                    
+                    tx.begin();
+                    em.persist(test);
+                    tx.commit();
+
+                    tx.begin();
+                    em.remove(em.find(Account.class, acc));
+                    tx.commit();
+                    String text = "{\"text\":\"Account has been closed succesfuly.\"}";
+                    return Response.status(Response.Status.OK).entity(text).build();
+                } else {
+                    //account not empty
+                    String text = "{\"text\":\"the account is not empty.\"}";
+                    return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+                }
+            } else {
+                //not your account
+                String text = "{\"text\":\"This account does not belong to you.\"}";
+                return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+            }
+        } else {
+            //not authorised
+            String text = "{\"text\":\"Incorrect token or not logged in.\"}";
+            return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+        }
     }
 }
