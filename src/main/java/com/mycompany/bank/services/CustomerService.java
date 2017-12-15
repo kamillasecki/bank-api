@@ -105,4 +105,40 @@ public class CustomerService {
             return Response.status(Response.Status.FORBIDDEN).entity(text).build();
         }
     }
+    
+    
+    
+    public Response setCustomer(int id, Customer newDetails, String token){
+    
+        Customer test = em.find(Customer.class, id);
+
+        if (test.getToken().equals(token)) {
+            
+            //mapping new details against customer
+           // em.getTransaction().begin();
+            test.setAddress(newDetails.getAddress());
+            test.setEmail(newDetails.getEmail());
+            test.setName(newDetails.getName());
+            
+            //em.getTransaction().commit();
+                        
+//                        em.persist(test);
+//                        
+//                        em.close();
+                        
+            return Response.status(Response.Status.OK).entity(test).build();
+            
+        } else {
+            String text = "{\"text\":\"Incorrect token or user.\"}";
+            return Response.status(Response.Status.FORBIDDEN).entity(text).build();
+        }
+
+    }
+    
+    //Is there a good way no how to do it in HIbernate?
+//    public Response getAllUsers(){
+//    
+//        
+//    }
+    
 }

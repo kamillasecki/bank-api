@@ -19,14 +19,23 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/user")
+@Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class BankResource {
 
     CustomerService customerService = new CustomerService();
     AccountService accountService = new AccountService();
-
+    
+    
+    
+    //Get all user accounts
+//    @GET
+//    @Path("")
+//    public Response getAllUsers() {
+//        return customerService.getAllUsers();
+//    }
+    
     @POST
     @Path("/registration")
     public Response createCustomer(Customer customer) {
@@ -70,25 +79,37 @@ public class BankResource {
             return Response.status(Response.Status.OK).entity(c).build();
         }
     }
+    @POST
+    @Path("/{id}")
+    public Response setCustomer(Customer c, @PathParam("id") int id, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        
+        System.out.println("Debug..");
+        System.out.println(c.getName());
+        
+        return customerService.setCustomer(id, c, authHeaders.get(0));
+        
+    }
     
     
     //Getting all user accounts
     @GET
-    @Path("/{id}/account")
+    @Path("/{id}/accounts")
     public Response getAccounts(Account account, @PathParam("id") int id, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.getAccounts(id, authHeaders.get(0));
     }
 
     @POST
-    @Path("/{id}/account")
+    @Path("/{id}/accounts")
     public Response newAccount(Account account, @PathParam("id") int id, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.newAccount(id, authHeaders.get(0), account.getName());
     }
+    
 
     @POST
-    @Path("/{id}/account/{acc}")
+    @Path("/{id}/accounts/{acc}")
     public Response addMoney(Transaction transaction, @PathParam("id") int id, @PathParam("acc") int acc, @Context HttpHeaders headers) {
         transaction.setAccountNumber(acc);
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
@@ -96,21 +117,29 @@ public class BankResource {
     }
 
     @GET
-    @Path("/{id}/account/{acc}")
+    @Path("/{id}/accounts/{acc}")
     public Response getAccount(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.getAccoumt(id, acc, authHeaders.get(0));
     }
+    
+    @GET
+    @Path("/{id}/accounts/{acc}/ballance")
+    public Response getAccountBallance(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        return accountService.getAccountBallance(id, acc, authHeaders.get(0));
+    }
+    
 
-    @POST
-    @Path("/{id}/account/{acc}/transfer")
+    @PUT
+    @Path("/{id}/accounts/{acc}")
     public Response sendMoney(Transaction transaction, @PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.sendMoney(id, acc, authHeaders.get(0), transaction);
     }
     
     @DELETE
-    @Path("/{id}/account/{acc}")
+    @Path("/{id}/accounts/{acc}")
     public Response deleteAccount(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.deleteAccount(id, acc, authHeaders.get(0));
@@ -118,18 +147,18 @@ public class BankResource {
     
     // Transaction display and info
     @GET
-    @Path("/{id}/account/{acc}/transactions")
+    @Path("/{id}/accounts/{acc}/transactions")
     public Response getAccountTransactions(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.getAccoumtTransactions(id, acc, authHeaders.get(0));
     }
     
-//    @GET
-//    @Path("/{id}/account/{acc}/transactions/{trx}")
-//    public Response getAccountTransactions(@PathParam("id") int id, @PathParam("acc") long acc, @PathParam("trx") int trx, @Context HttpHeaders headers) {
-//        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-//        return accountService.getAccoumtTransaction(id, acc, trx, authHeaders.get(0));
-//    }
+    @GET
+    @Path("/{id}/accounts/{acc}/transactions/{trx}")
+    public Response getAccountTransactions(@PathParam("id") int id, @PathParam("acc") long acc, @PathParam("trx") int trx, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        return accountService.getAccoumtTransaction(id, acc, trx, authHeaders.get(0));
+    }
     
 }
 

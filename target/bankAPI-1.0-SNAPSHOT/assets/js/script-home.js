@@ -21,7 +21,7 @@ $(document).ready(function () {
                     'Content-Type': 'application/json',
                     'Authorization': token
                 },
-                url: "/api/user/" + id + "/account",
+                url: "/api/users/" + id + "/accounts",
                 type: "POST",
                 data: data,
                 dataType: "json",
@@ -46,7 +46,7 @@ function logout() {
         headers: {
             'Authorization': token
         },
-        url: "/api/user/" + id + "/logout",
+        url: "/api/users/" + id + "/logout",
         type: "GET",
         dataType: "text",
         success: function () {
@@ -65,7 +65,7 @@ function load() {
             'Content-Type': 'application/json',
             'Authorization': token
         },
-        url: "/api/user/" + id,
+        url: "/api/users/" + id,
         type: "GET",
         dataType: "json",
         success: function (result) {
@@ -101,7 +101,7 @@ function removeAcc(acc) {
             'Content-Type': 'application/json',
             'Authorization': token
         },
-        url: "/api/user/" + id + "/account/" + acc,
+        url: "/api/users/" + id + "/accounts/" + acc,
         type: "DELETE",
         dataType: "json",
         success: function () {

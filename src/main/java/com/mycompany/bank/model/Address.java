@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Embeddable // Tells hibernate that this class is embedded as part of another class
 public class Address {
+
     
     private String street;
     private String city;

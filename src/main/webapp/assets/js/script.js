@@ -34,7 +34,7 @@
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    url: "/api/user/registration",
+                    url: "/api/users/registration",
                     type: "POST",
                     data: JSON.stringify(user),
                     dataType: "json",

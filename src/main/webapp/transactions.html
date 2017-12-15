@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
         <link rel="stylesheet" href="assets/css/user.css">   
     </head>
+    
 
     <body>
         <nav class="navbar navbar-default">
@@ -22,10 +23,13 @@
                         <li role="presentation"><a href="#" id="home_link">Home </a></li>
                         <li role="presentation"><a href="#" id="transactions_link">Transactions </a></li>
                         <li role="presentation"><a href="#" id="transfers_link">Transfers </a></li>
-                    </ul>                              
-                    <div id="login_button">
-                        <a href="login.html" class="btn btn-primary navbar-btn navbar-right"><strong>Login</strong></a>  
-                    </div>
+                    </ul>
+                        <a style="margin-left: 5px" id= 'change_user_details' href="#" class="btn btn-primary navbar-btn navbar-right"><strong>Change User Details</strong></a>
+
+                           <div id="login_button">
+                                <a href="login.html" class="btn btn-primary navbar-btn navbar-right"><strong>Login</strong></a>  
+                           </div>
+
                 </div>
             </div>
         </nav>
@@ -37,9 +41,21 @@
                 </div>
             </div>
             <div class="page-header">
-                <h3>Your accounts:</h3></div>
+                <h3>Your Transaction details</h3></div>
                 <div id="alert2"></div>
-            <div class="table-responsive">
+
+                <div id="exTab2" class="container">	
+                <ul id='accountTabs' class="nav nav-tabs">
+
+                </ul>
+
+                        <div id="tabContent" class="tab-content ">
+
+                        </div>
+                  </div>
+
+                
+<!--            <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -53,7 +69,7 @@
 
                     </tbody>
                 </table>
-            </div>
+            </div>-->
         </div>
         <footer class="site-footer">
             <div class="container">
@@ -65,6 +81,52 @@
                 </div>
             </div>
         </footer>
+        
+        
+        
+                <!--user details modal-->
+                    <div id="transaction_details_modal" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">Transaction Details</h4>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="row register-form">
+                    <div class="col-md-8 col-md-offset-2">
+
+                        <dl class="dl-horizontal">
+                          <dt>Account: </dt>
+                          <dd id="account_t"></dd>
+                          <dt>Amount: </dt>
+                          <dd id="amount_t"></dd>
+                          <dt>Date: </dt>
+                          <dd id="date_t"></dd>
+                          <dt>Description: </dt>
+                          <dd id="description_t"></dd>
+                          <dt>PostBallance: </dt>
+                          <dd id="postBallance_t"></dd>
+                          <dt>Type: </dt>
+                          <dd id="type_t"></dd>
+                        </dl>
+
+                    </div>
+                </div>
+                        
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+        
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/script-transactions.js"></script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
