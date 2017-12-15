@@ -5,7 +5,7 @@ var id = url.searchParams.get("id");
 
 $(document).ready(function () {
     
-    $("#change_user_details").click( ()=> { $("#user_details_modal").modal('show'); })
+    $("#change_user_details").click( ()=> { $("#user_details_modal").modal('show'); console.log('xxx') })
     
     loadUser();
 

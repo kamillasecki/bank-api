@@ -117,19 +117,20 @@ public class CustomerService {
             //mapping new details against customer
             
             
+           
+            if(newDetails.getAddress() != null)
+                test.setAddress(newDetails.getAddress());
+            if(newDetails.getEmail() != null)
+                test.setEmail(newDetails.getEmail());
+            if(newDetails.getName() != null)
+                test.setName(newDetails.getName());
             
-            em.getTransaction().begin();
-            
-            test.setAddress(newDetails.getAddress());
-            test.setEmail(newDetails.getEmail());
-            test.setName(newDetails.getName());
+            tx.begin();
             em.persist(test);
-            em.getTransaction().commit();
-            em.close();
-                        
-
-                        
+            tx.commit();
+            
             return Response.status(Response.Status.OK).entity(test).build();
+                        
             
         } else {
             String text = "{\"text\":\"Incorrect token or user.\"}";

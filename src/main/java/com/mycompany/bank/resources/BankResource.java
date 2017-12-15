@@ -86,6 +86,10 @@ public class BankResource {
         
         System.out.println("Debug..");
         System.out.println(c.getName());
+        System.out.println(c.getEmail());
+        System.out.println(c.getAddress().getCity());
+        System.out.println(c.getAddress().getCounty());
+        System.out.println(c.getAddress().getStreet());
         
         return customerService.setCustomer(id, c, authHeaders.get(0));
         
