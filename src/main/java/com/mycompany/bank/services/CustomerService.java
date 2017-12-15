@@ -115,16 +115,19 @@ public class CustomerService {
         if (test.getToken().equals(token)) {
             
             //mapping new details against customer
-           // em.getTransaction().begin();
+            
+            
+            
+            em.getTransaction().begin();
+            
             test.setAddress(newDetails.getAddress());
             test.setEmail(newDetails.getEmail());
             test.setName(newDetails.getName());
-            
-            //em.getTransaction().commit();
+            em.persist(test);
+            em.getTransaction().commit();
+            em.close();
                         
-//                        em.persist(test);
-//                        
-//                        em.close();
+
                         
             return Response.status(Response.Status.OK).entity(test).build();
             

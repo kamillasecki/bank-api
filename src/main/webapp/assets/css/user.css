@@ -6,7 +6,8 @@
   padding-bottom:12px;
   margin-bottom:40px;
 }
-
+ #exTab2 {min-height: 300px;}
+ 
 nav.navbar.navbar-default {
   margin-bottom:0px;
 }
