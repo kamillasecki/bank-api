@@ -11,6 +11,7 @@ import com.mycompany.bank.model.Account;
 import com.mycompany.bank.model.Customer;
 import com.mycompany.bank.model.Transaction;
 import com.mycompany.bank.model.transactionType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -255,6 +256,70 @@ public class AccountService {
             return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
     }
+    public Response getAccounts(int id, String token){
+        
+        Customer test = em.find(Customer.class, id);
+
+        if (test.getToken().equals(token)) {
+            //Get all users account
+            List<Account> accounts = (List<Account>) test.getAccount();
+            
+            if (accounts != null) {
+                return Response.status(Response.Status.OK).entity(accounts).build();
+            } else {
+                String text = "{\"text\":\"Account does not exist.\"}";
+                return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+            }
+               
+        }else {
+            String text = "{\"text\":\"Wrong token or not logged in.\"}";
+            return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+        }
+        
+    }
+    public Response getAccoumtTransactions(int id, long acc, String token){
+        
+            if (validateToken(id, token)) {
+            Account a = em.find(Account.class, acc);
+            if (a != null) {
+                return Response.status(Response.Status.OK).entity( a.getTransactions()).build();
+            } else {
+                String text = "{\"text\":\"Account does not exist.\"}";
+                return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+            }
+        } else {
+            String text = "{\"text\":\"Wrong token or not logged in.\"}";
+            return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+        }
+        
+    }
+    
+//    public Response getAccoumtTransaction(int id, long acc, int trx, String token){
+//        
+//            if (validateToken(id, token)) {
+//            Account a = em.find(Account.class, acc);
+//            if (a != null) {
+//                
+//                ArrayList<Transaction> trxList = (ArrayList<Transaction>) a.getTransactions();
+//                
+//                
+//                for (int i = 0; i < trxList.size(); i++) {
+//                    if (trxList.get(i).getAccNumber() == senderAcc) {
+//                        trxList = true;
+//                    }
+//                }
+//                
+//                return Response.status(Response.Status.OK).entity(trx).build();
+//            } else {
+//                String text = "{\"text\":\"Account does not exist.\"}";
+//                return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+//            }
+//        } else {
+//            String text = "{\"text\":\"Wrong token or not logged in.\"}";
+//            return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+//        }
+//        
+//    }
 
     public Response deleteAccount(int id, long acc, String token) {
         Customer test = em.find(Customer.class, id);

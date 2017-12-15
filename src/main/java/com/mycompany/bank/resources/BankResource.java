@@ -70,6 +70,15 @@ public class BankResource {
             return Response.status(Response.Status.OK).entity(c).build();
         }
     }
+    
+    
+    //Getting all user accounts
+    @GET
+    @Path("/{id}/account")
+    public Response getAccounts(Account account, @PathParam("id") int id, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        return accountService.getAccounts(id, authHeaders.get(0));
+    }
 
     @POST
     @Path("/{id}/account")
@@ -106,4 +115,24 @@ public class BankResource {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         return accountService.deleteAccount(id, acc, authHeaders.get(0));
     }
+    
+    // Transaction display and info
+    @GET
+    @Path("/{id}/account/{acc}/transactions")
+    public Response getAccountTransactions(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        return accountService.getAccoumtTransactions(id, acc, authHeaders.get(0));
+    }
+    
+//    @GET
+//    @Path("/{id}/account/{acc}/transactions/{trx}")
+//    public Response getAccountTransactions(@PathParam("id") int id, @PathParam("acc") long acc, @PathParam("trx") int trx, @Context HttpHeaders headers) {
+//        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+//        return accountService.getAccoumtTransaction(id, acc, trx, authHeaders.get(0));
+//    }
+    
 }
+
+
+
+
