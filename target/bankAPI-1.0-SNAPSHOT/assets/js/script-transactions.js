@@ -47,8 +47,14 @@ function load() {
                 var set = '<tr>';
                 for (var g = 0; g < result.account[i].transactions.length; g++){
                     console.log('running g'+g);
+                    var date = result.account[i].transactions[g].date;
+                    var formatDate = date.substring(8,10) + "/" + date.substring(5,7) + "/" + date.substring(0,4)
                     
-                     set += '<td>'+result.account[i].transactions[g].id+'</td>'+'<td>'+result.account[i].transactions[g].date+'</td>'+'<td>'+result.account[i].transactions[g].type+'</td>'+'<td>€ '+result.account[i].transactions[g].amount+'</td>'+'<td><button class="btn btn-default submit-button" onClick="getDetails(' + i + ','+g+')" type="button">Details</button>';
+                     set += '<td>'+formatDate+'</td>'+
+                             '<td>'+result.account[i].transactions[g].type+'</td>'+
+                             '<td>€ '+result.account[i].transactions[g].amount+'</td>'+
+                             '<td>€ '+result.account[i].transactions[g].postBallance+'</td>'+
+                             '<td><button class="btn-xs btn-default submit-button" onClick="getDetails(' + i + ','+g+')" type="button">Details</button>';
                      set += '</tr>';
                 }
                  
@@ -56,10 +62,10 @@ function load() {
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
-                                                            <th>id</th>
-                                                            <th>date</th>
+                                                            <th>Date</th>
                                                             <th>Type</th>
                                                             <th>Ammount</th>
+                                                            <th>Balance</th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>

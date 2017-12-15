@@ -38,7 +38,8 @@ $(document).ready(function () {
                 $.ajax({
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                     url: "/api/users/"+id,
                     type: "POST",
