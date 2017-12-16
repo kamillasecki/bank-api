@@ -328,21 +328,44 @@ public class AccountService {
     }
 
     public Response getAccoumtTransactions(int id, long acc, String token) {
+        Customer test = em.find(Customer.class, id);
+        //authenticate token
+        if (test.getToken().equals(token)) {
+            //get all user's accounts
+            List<Account> accounts = (List<Account>) test.getAccount();
+            boolean found = false;
+            int j = -1;
 
-        if (validateToken(id, token)) {
-            Account a = em.find(Account.class, acc);
-            if (a != null) {
+            //check if user have any accounts
+            if (!accounts.isEmpty()) {
+                //check id requested account exists for the user
+                for (int i = 0; i < accounts.size(); i++) {
+                    if (accounts.get(i).getAccNumber() == acc) {
+                        found = true;
+                        j = i;
+                    }
+                }
 
-                GenericEntity<List<Transaction>> list = new GenericEntity<List<Transaction>>((List<Transaction>) a.getTransactions()) {
-                };
+                //account ok
+                if (found) {
+                    Account a = em.find(Account.class, acc);
+                    GenericEntity<List<Transaction>> list = new GenericEntity<List<Transaction>>((List<Transaction>) a.getTransactions()) {
+                    };
 
-                return Response.status(Response.Status.OK).entity(list).build();
+                    return Response.status(Response.Status.OK).entity(list).build();
+                } else {
+                    //bad account
+                    String text = "{\"text\":\"Requested account does not exist or does'n belong to you.\"}";
+                    return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+                }
             } else {
-                String text = "{\"text\":\"Account does not exist.\"}";
+                //no accounts
+                String text = "{\"text\":\"You dont have any accounts yet. Please create the account first.\"}";
                 return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
             }
         } else {
-            String text = "{\"text\":\"Wrong token or not logged in.\"}";
+            //unauthorised token
+            String text = "{\"text\":\"Incorrect token or not logged in.\"}";
             return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
 
