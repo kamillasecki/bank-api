@@ -81,13 +81,12 @@ Authorization: o32vj4d3g3vg0lrfc83tb166rp
 
 ACCOUNT BALANCE
 =========================
-GET /api/users/1/accounts/40566197/ballance HTTP/1.1
-Host: localhost:49000
-Accept: application/json
-Content-Type: application/json
-Authorization: 218vgu2f8a9b12hf6spdfrq4gn
-Cache-Control: no-cache
-Postman-Token: 0582e4c0-2426-1ba5-e0f4-a36de50c4ba4
+GET /api/users/1/accounts/40566197/ballance HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+Authorization: 218vgu2f8a9b12hf6spdfrq4gn  
+
 
 
 <p>
