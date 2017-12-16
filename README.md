@@ -1,6 +1,6 @@
 REGISTRATION  
 ========================  
-POST /api/user/registration HTTP/1.1  
+POST /api/users/registration HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
 Content-Type: application/json  
@@ -16,7 +16,7 @@ Content-Type: application/json
   
 LOGIN
 ========================  
-POST /api/user/login HTTP/1.1  
+POST /api/users/login HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json   
 Content-Type: application/json  
@@ -28,13 +28,13 @@ Content-Type: application/json
   
 LOGOUT
 ========================  
-GET /api/user/32768/logout HTTP/1.1  
+GET /api/users/32768/logout HTTP/1.1  
 Host: localhost:49000  
 Authorization: huls3mhvnqlr8uju2pf09b36c9  
   
 ADD NEW ACCOUT
 ========================  
-POST /api/user/32768/account/new HTTP/1.1  
+POST /api/users/32768/account/new HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
 Content-Type: application/json  
@@ -46,7 +46,7 @@ Authorization: o32vj4d3g3vg0lrfc83tb166rp
   
 ACCOUNT TOPUP
 ========================  
-POST /api/user/32768/account/31983797/addMoney HTTP/1.1  
+POST /api/users/32768/account/31983797/addMoney HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
 Content-Type: application/json  
@@ -58,7 +58,7 @@ Authorization: o32vj4d3g3vg0lrfc83tb166rp
    
 GET USER BY ID
 ========================  
-GET /api/user/32768 HTTP/1.1  
+GET /api/users/32768 HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
 Content-Type: application/json  
@@ -66,7 +66,7 @@ Authorization: o32vj4d3g3vg0lrfc83tb166rp
   
 MONEY TRANSFER
 =========================
-POST /api/user/32768/account/31983797/transfer HTTP/1.1  
+POST /api/users/32768/account/31983797/transfer HTTP/1.1  
 Host: localhost:49000  
 Accept: application/json  
 Content-Type: application/json   
@@ -78,6 +78,16 @@ Authorization: o32vj4d3g3vg0lrfc83tb166rp
 	"accountNumber" : 66534392  
 	  
 }  
+
+ACCOUNT BALANCE
+=========================
+GET /api/users/1/accounts/40566197/ballance HTTP/1.1  
+Host: localhost:49000  
+Accept: application/json  
+Content-Type: application/json  
+Authorization: 218vgu2f8a9b12hf6spdfrq4gn  
+
+
 
 <p>
   <b>API name:</b></b> getBooks() <br/>
