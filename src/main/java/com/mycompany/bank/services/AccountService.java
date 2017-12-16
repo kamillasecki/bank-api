@@ -257,55 +257,85 @@ public class AccountService {
             return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
     }
-    
+
     public Response getAccountBallance(int id, long acc, String token) {
-        if (validateToken(id, token)) {
-            Account a = em.find(Account.class, acc);
-            if (a != null) {
-                return Response.status(Response.Status.OK).entity(a.getBalance()).build();
+        Customer test = em.find(Customer.class, id);
+        //authenticate token
+        if (test.getToken().equals(token)) {
+            //get all user's accounts
+            List<Account> accounts = (List<Account>) test.getAccount();
+            boolean found = false;
+            int j = -1;
+
+            //check if user have any accounts
+            if (!accounts.isEmpty()) {
+                //check id requested account exists for the user
+                for (int i = 0; i < accounts.size(); i++) {
+                    if (accounts.get(i).getAccNumber() == acc) {
+                        found = true;
+                        j = i;
+                    }
+                }
+
+                //account ok
+                if (found) {
+                    Account a = em.find(Account.class, acc);
+                    int b = a.getBalance();
+                    System.out.println("Balance: " + b);
+                    String text = "{\"balance\":" + b + "}";
+                    return Response.status(Response.Status.OK).entity(text).build();
+                } else {
+                    //bad account
+                    String text = "{\"text\":\"Requested account does not exist or does'n belong to you.\"}";
+                    return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
+                }
             } else {
-                String text = "{\"text\":\"Account does not exist.\"}";
+                //no accounts
+                String text = "{\"text\":\"You dont have any accounts yet. Please create the account first.\"}";
                 return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
             }
         } else {
-            String text = "{\"text\":\"Wrong token or not logged in.\"}";
+            //unauthorised token
+            String text = "{\"text\":\"Incorrect token or not logged in.\"}";
             return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
     }
-    
-    
-    public Response getAccounts(int id, String token){
-        
+
+    public Response getAccounts(int id, String token) {
+
         Customer test = em.find(Customer.class, id);
 
         if (test.getToken().equals(token)) {
             //Get all users account
             List<Account> accounts = (List<Account>) test.getAccount();
-            
+
             if (accounts != null) {
-                
-                GenericEntity<List<Account>> list = new GenericEntity<List<Account>>((List<Account>) accounts) {};
-                
+
+                GenericEntity<List<Account>> list = new GenericEntity<List<Account>>((List<Account>) accounts) {
+                };
+
                 return Response.status(Response.Status.OK).entity(list).build();
             } else {
                 String text = "{\"text\":\"Account does not exist.\"}";
                 return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
             }
-               
-        }else {
+
+        } else {
             String text = "{\"text\":\"Wrong token or not logged in.\"}";
             return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
-        
+
     }
-    public Response getAccoumtTransactions(int id, long acc, String token){
-        
-            if (validateToken(id, token)) {
+
+    public Response getAccoumtTransactions(int id, long acc, String token) {
+
+        if (validateToken(id, token)) {
             Account a = em.find(Account.class, acc);
             if (a != null) {
-                
-                GenericEntity<List<Transaction>> list = new GenericEntity<List<Transaction>>((List<Transaction>) a.getTransactions()) {};
-                
+
+                GenericEntity<List<Transaction>> list = new GenericEntity<List<Transaction>>((List<Transaction>) a.getTransactions()) {
+                };
+
                 return Response.status(Response.Status.OK).entity(list).build();
             } else {
                 String text = "{\"text\":\"Account does not exist.\"}";
@@ -315,28 +345,27 @@ public class AccountService {
             String text = "{\"text\":\"Wrong token or not logged in.\"}";
             return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
-        
+
     }
-    
-    public Response getAccoumtTransaction(int id, long acc, int trx, String token){
-        
-            if (validateToken(id, token)) {
+
+    public Response getAccoumtTransaction(int id, long acc, int trx, String token) {
+
+        if (validateToken(id, token)) {
             Account a = em.find(Account.class, acc);
             if (a != null) {
-                
+
                 List<Transaction> trxList = (List<Transaction>) a.getTransactions();
-                
-                if(!trxList.isEmpty()){
-                  for (int i = 0; i < trxList.size(); i++) {
-                    if (trxList.get(i).getId() == trx) {
-                        return Response.status(Response.Status.OK).entity(trxList.get(i)).build();
+
+                if (!trxList.isEmpty()) {
+                    for (int i = 0; i < trxList.size(); i++) {
+                        if (trxList.get(i).getId() == trx) {
+                            return Response.status(Response.Status.OK).entity(trxList.get(i)).build();
+                        }
                     }
-                  }
-                }
-                else{
+                } else {
                     return Response.status(Response.Status.OK).entity(null).build();
                 }
-                 
+
                 return Response.status(Response.Status.OK).entity(trx).build();
             } else {
                 String text = "{\"text\":\"Account does not exist.\"}";
@@ -346,7 +375,7 @@ public class AccountService {
             String text = "{\"text\":\"Wrong token or not logged in.\"}";
             return Response.status(Response.Status.UNAUTHORIZED).entity(text).build();
         }
-        
+
     }
 
     public Response deleteAccount(int id, long acc, String token) {
@@ -366,7 +395,7 @@ public class AccountService {
                 Account a = accounts.get(j);
                 if (a.getBalance() == 0) {
                     test.getAccount().remove(a);
-                    
+
                     tx.begin();
                     em.persist(test);
                     tx.commit();

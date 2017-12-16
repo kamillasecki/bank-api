@@ -1,6 +1,10 @@
 com\mycompany\bank\model\Customer.class
+com\mycompany\bank\resources\BankResource.class
 com\mycompany\bank\services\CustomerService.class
 com\mycompany\bank\model\Transaction.class
 com\mycompany\bank\model\transactionType.class
+com\mycompany\bank\services\AccountService$1.class
 com\mycompany\bank\model\Account.class
+com\mycompany\bank\services\AccountService$2.class
 com\mycompany\bank\model\Address.class
+com\mycompany\bank\services\AccountService.class
