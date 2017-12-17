@@ -139,10 +139,23 @@ public class CustomerService {
 
     }
     
-    //Is there a good way no how to do it in HIbernate?
-//    public Response getAllUsers(){
-//    
-//        
-//    }
-    
+    public Response setPassword(int id, Customer c, String token) {
+        Customer test = em.find(Customer.class, id);
+
+        if (test.getToken().equals(token)) {
+            if(c.getPassword() != null)
+                test.setPassword(c.getPassword());
+            tx.begin();
+            em.persist(test);
+            tx.commit();
+            
+            return Response.status(Response.Status.OK).entity(test).build();
+                        
+            
+        } else {
+            String text = "{\"text\":\"Incorrect token or user.\"}";
+            return Response.status(Response.Status.FORBIDDEN).entity(text).build();
+        }
+    }
+ 
 }

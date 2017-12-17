@@ -12,6 +12,7 @@ import com.mycompany.bank.model.Customer;
 import com.mycompany.bank.model.Transaction;
 import com.mycompany.bank.services.AccountService;
 import com.mycompany.bank.services.CustomerService;
+import com.mycompany.bank.services.TransactionService;
 import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -26,16 +27,8 @@ public class BankResource {
 
     CustomerService customerService = new CustomerService();
     AccountService accountService = new AccountService();
-    
-    
-    
-    //Get all user accounts
-//    @GET
-//    @Path("")
-//    public Response getAllUsers() {
-//        return customerService.getAllUsers();
-//    }
-    
+    TransactionService transactionService = new TransactionService();
+
     @POST
     @Path("/registration")
     public Response createCustomer(Customer customer) {
@@ -154,14 +147,21 @@ public class BankResource {
     @Path("/{id}/accounts/{acc}/transactions")
     public Response getAccountTransactions(@PathParam("id") int id, @PathParam("acc") long acc, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        return accountService.getAccoumtTransactions(id, acc, authHeaders.get(0));
+        return transactionService.getAccoumtTransactions(id, acc, authHeaders.get(0));
     }
     
     @GET
     @Path("/{id}/accounts/{acc}/transactions/{trx}")
     public Response getAccountTransactions(@PathParam("id") int id, @PathParam("acc") long acc, @PathParam("trx") int trx, @Context HttpHeaders headers) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
-        return accountService.getAccoumtTransaction(id, acc, trx, authHeaders.get(0));
+        return transactionService.getAccoumtTransaction(id, acc, trx, authHeaders.get(0));
+    }
+    
+    @PUT
+    @Path("/{id}/password")
+    public Response setPassword(Customer c, @PathParam("id") int id, @Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        return customerService.setPassword(id, c, authHeaders.get(0));
     }
     
 }
